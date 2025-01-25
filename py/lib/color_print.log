@@ -1,0 +1,16 @@
+2025-01-25 19:46:09,012 INFO This is an info message.
+2025-01-25 19:46:09,012 WARNING This is a warning message.
+2025-01-25 19:46:09,012 ERROR This is an error message.
+2025-01-25 19:49:48,831 INFO This is an info message.
+2025-01-25 19:49:48,831 WARNING This is a warning message.
+2025-01-25 19:49:48,831 ERROR This is an error message.
+2025-01-25 19:49:48,831 INFO This is a success message.
+2025-01-25 19:50:11,429 INFO This is an info message.
+2025-01-25 19:50:11,430 WARNING This is a warning message.
+2025-01-25 19:50:11,430 ERROR This is an error message.
+2025-01-25 19:50:11,430 INFO This is a success message.
+2025-01-25 19:50:21,104 INFO This is an info message.
+2025-01-25 19:50:21,104 WARNING This is a warning message.
+2025-01-25 19:50:21,104 ERROR This is an error message.
+2025-01-25 19:50:21,104 INFO This is a success message.
+2025-01-25 19:50:21,104 ERROR This is a failure message.

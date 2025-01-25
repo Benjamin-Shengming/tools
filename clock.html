@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fullscreen Clock</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        #clock {
+            font-size: 10vw; /* Initial font size */
+        }
+    </style>
+</head>
+<body>
+    <div id="clock"></div>
+    <script>
+        let previousColor = '';
+
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const colon = now.getSeconds() % 2 === 0 ? ':' : ' ';
+            document.getElementById('clock').textContent = `${hours}${colon}${minutes}`;
+            adjustFontSize();
+            changeColor();
+        }
+
+        function adjustFontSize() {
+            const clock = document.getElementById('clock');
+            const parent = clock.parentElement;
+            const parentWidth = parent.clientWidth;
+            const parentHeight = parent.clientHeight;
+            let fontSize = parseInt(window.getComputedStyle(clock).fontSize);
+
+            while (clock.scrollWidth > parentWidth || clock.scrollHeight > parentHeight) {
+                fontSize -= 1;
+                clock.style.fontSize = `${fontSize}px`;
+            }
+
+            while (clock.scrollWidth < parentWidth && clock.scrollHeight < parentHeight) {
+                fontSize += 1;
+                clock.style.fontSize = `${fontSize}px`;
+            }
+
+            clock.style.fontSize = `${fontSize - 1}px`; // Ensure it fits
+        }
+
+        function changeColor() {
+            const colors = ['#33FFF5', '#FFFFFF'];
+            let randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+            while (randomColor === previousColor) {
+                randomColor = colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            document.getElementById('clock').style.color = randomColor;
+            previousColor = randomColor;
+        }
+
+        function speakTime() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const timeString = `The time is ${hours} ${minutes}`;
+            const utterance = new SpeechSynthesisUtterance(timeString);
+            speechSynthesis.speak(utterance);
+        }
+
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        const now = new Date();
+        const minutesUntilNextHour = (60 - now.getMinutes()) * 60 * 1000;
+        setTimeout(() => {
+            speakTime();
+            setInterval(speakTime, 60 * 60 * 1000);
+        }, minutesUntilNextHour);
+    </script>
+</body>
+</html>
