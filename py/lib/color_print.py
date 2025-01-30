@@ -27,14 +27,20 @@ class ColorPrint:
     def error(self, message):
         self.log_message('error', message)
 
-    def success(self, message):
-        self.log_message('success', message)
-
     def debug(self, message):
         self.log_message('debug', message)
 
+    def success(self, message):
+        self.log_message('success', message)
+
     def failure(self, message):
         self.log_message('failure', message)
+
+    def normal(self, message):
+        formatted_message = f"{COLORS['white']}{message}{COLORS['endc']}"
+        print(formatted_message)
+        if self.logger:
+            self.logger.log(logging.INFO, message)
 
 # Example usage
 if __name__ == "__main__":
@@ -46,3 +52,4 @@ if __name__ == "__main__":
     cp.success("This is a success message.")
     cp.debug("This is a debug message.")
     cp.failure("This is a failure message.")
+    cp.normal("This is a normal message.")
