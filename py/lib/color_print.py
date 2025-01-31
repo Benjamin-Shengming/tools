@@ -1,20 +1,33 @@
 #!/usr/bin/env python3
 
-from constants import COLORS, ICONS
+from constants import LogLevel, Icon, ANSI_RESET, TextColor, BgColor, TextStyle
+from ansi_escape import AnsiEscape
 from log import setup_logger
 import logging
 
 class ColorPrint:
-    def __init__(self, logger=None):
+    def __init__(self, logger=None, use_icons=True, bg_color=None, style=None):
         self.logger = logger
+        self.set(use_icons, bg_color, style)
+
+    def set(self, use_icons=True, bg_color=None, style=None):
+        self.use_icons = use_icons
+        self.bg_color = bg_color
+        self.style = style 
+
+    def reset(self):
+        self.set(use_icons=True, bg_color=None, style=None)
 
     def log_message(self, level, message):
-        formatted_message = f"{COLORS[level]}{ICONS[level]} {level.upper()}: {message}{COLORS['endc']}"
+        text_color = LogLevel[level.upper()]
+        icon = Icon[level.upper()].value if self.use_icons else ''
+        ansi_escape = AnsiEscape(text_color=text_color, bg_color=self.bg_color, style=self.style)
+        formatted_message = f"{ansi_escape.ansi_wrap(icon + ' ' + level.upper() + ': ' + message)}"
         print(formatted_message)
         if self.logger:
             if level.lower() == "success":
                 level = "info"
-            if level.lower() == "failure":
+            if level.lower() == "fail":
                 level = "error"
             self.logger.log(getattr(logging, level.upper()), message)
 
@@ -33,11 +46,12 @@ class ColorPrint:
     def success(self, message):
         self.log_message('success', message)
 
-    def failure(self, message):
-        self.log_message('failure', message)
+    def fail(self, message):
+        self.log_message('fail', message)
 
-    def normal(self, message):
-        formatted_message = f"{COLORS['white']}{message}{COLORS['endc']}"
+    def print(self, message, text_color=None):
+        ansi_escape = AnsiEscape(text_color=text_color, bg_color=self.bg_color, style=self.style)
+        formatted_message = f"{ansi_escape.ansi_wrap(message)}"
         print(formatted_message)
         if self.logger:
             self.logger.log(logging.INFO, message)
@@ -45,11 +59,14 @@ class ColorPrint:
 # Example usage
 if __name__ == "__main__":
     logger = setup_logger('color_print_logger', 'color_print.log')
-    cp = ColorPrint(logger)
+    cp = ColorPrint(logger, use_icons=True, bg_color=BgColor.BG_BLUE, style=TextStyle.BOLD)
+    cp.print("This is a message with white text and blue background.", TextColor.WHITE)
+
+    cp.reset()
     cp.info("This is an info message.")
     cp.warning("This is a warning message.")
     cp.error("This is an error message.")
     cp.success("This is a success message.")
     cp.debug("This is a debug message.")
-    cp.failure("This is a failure message.")
-    cp.normal("This is a normal message.")
+    cp.fail("This is a failure message.")
+    cp.print("This is a bold red text with black background.", TextColor.RED)
