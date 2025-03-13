@@ -80,7 +80,7 @@ def generate_member_card(template_path, output_path,
     qr = qr.resize((200, 200))  # Resize as needed
     image.paste(qr, (360, 510))  # Adjust position
 
-    draw.text((700, 550), card_type, fill="black", font=font)
+    draw.text((700, 550), get_card_type_str(card_type), fill="black", font=font)
     draw.text((100, 700), encrypt_data, fill="black", font=font)
 
     
