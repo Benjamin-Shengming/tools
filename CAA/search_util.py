@@ -1,20 +1,9 @@
 #!/usr/bin/env python3
 
 import pandas as pd
+
 from pprint import pprint
-
-import logging
-import logging.handlers
-import sys
-
-logger = logging.getLogger("CAA Utils")
-sys_log = logging.handlers.SysLogHandler(address="/dev/log")
-console_log = logging.StreamHandler(sys.stdout)
-
-logger.addHandler(sys_log)
-logger.addHandler(console_log)
-logger.setLevel(logging.INFO)
-#logger.setLevel(logging.DEBUG)
+from loguru import logger
 
 CN = 'Chinese Name'
 CNS = 'Chinese Name(Spouse)'

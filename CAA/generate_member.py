@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import pandas as pd
 from PIL import Image, ImageDraw, ImageFont
 import qrcode
 from datetime import datetime
@@ -14,8 +15,6 @@ import os
 AES_KEY=b"1234567890abcdef1234567890abccaa"
 nonce = b"\x05" * 12
 
-#logger.add(sys.stdout, colorize=True)
-
 def encrypt_chacha20(data: str, key: bytes) -> str:
     chacha = ChaCha20Poly1305(key)
     encrypted_data = chacha.encrypt(nonce, data.encode(), None)
@@ -27,6 +26,18 @@ def decrypt_chacha20(token: str, key: bytes) -> str:
     decrypted_data = chacha.decrypt(nonce, encrypted_data, None)
     return decrypted_data.decode()
 
+def get_card_type_str(card_type):
+    if card_type == "Family": 
+       return "家庭会员卡"
+    else:
+        return "个人会员卡"
+
+def get_card_type_enc_str(card_type):
+    if card_type == "Family": 
+       return "F"
+    else:
+        return "S"
+    
 def generate_member_card(template_path, output_path, 
                          card_no, issue_date, name, chinese_name, valid_till, issued_by, card_type):
     # Load the blank template
@@ -55,11 +66,10 @@ def generate_member_card(template_path, output_path,
     draw.text(positions["valid_till"], valid_till, fill="black", font=font)
     draw.text(positions["issued_by"], issued_by, fill="black", font=font)
     
-    # Generate QR Code
-    qr_data = f"{card_no}:{issue_date}:{name}:{chinese_name}:{valid_till}:{issued_by}:{card_type}"
+    qr_data = f"{card_no}:{issue_date}:{name}:{chinese_name}:{valid_till}:{issued_by}:{get_card_type_str(card_type)}"
     logger.info(f"QR Data: \n{qr_data}")
 
-    pt = f"{card_no}:{issue_date}"
+    pt = f"{card_no}:{issue_date}:{get_card_type_enc_str(card_type)}"
     encrypt_data = encrypt_chacha20(pt, AES_KEY)
     decrypted_data = decrypt_chacha20(encrypt_data, AES_KEY)
 
@@ -92,16 +102,15 @@ def parse_args():
     parser.add_argument("--valid_till", default=default_valid_till, help="Validity date")
     parser.add_argument("--issued_by", default="CAA", help="Issuer name")
     parser.add_argument("--card_type", default="Single", help="Card type:Single or Family")
+    parser.add_argument("--excel", default="./2025.xlsx", help="grap infrmation from excel")
+
     parser.add_argument("--verify", default=None, help="verify the card with decode")
+
 
     args = parser.parse_args()
     if args.card_type not in ["Single", "Family"]:
         raise ValueError("Card type must be 'Single' or 'Family'")
 
-    if args.card_type == "Family": 
-        args.card_type = "家庭会员卡"
-    else:
-        args.card_type = "个人会员卡"
 
     if args.output is None: 
         c_name = args.chinese_name if args.chinese_name else args.name
