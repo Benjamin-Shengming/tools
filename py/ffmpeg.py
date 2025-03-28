@@ -17,6 +17,11 @@ def is_video_file(file):
   """Check if the file is a video file."""
   return file.endswith('.mp4') or file.endswith('.mkv') or file.endswith('.avi') or file.endswith('.mov') or file.endswith('.flv') 
 
+def is_audio_file(file):
+  """Check if the file is an audio file."""
+  return file.endswith('.mp3') or file.endswith('.wav') or file.endswith('.flac') or file.endswith('.aac') or file.endswith('.ogg') 
+
+
 def get_files(folder_path, recursive=True):
   """List all files in a folder, optionally recursively."""
   if os.path.isfile(folder_path):
@@ -42,7 +47,7 @@ def to_mp4(args):
 def to_mp3(args):
   pr.print("===== to MP3 =====")
   files = get_files(args.path, args.recursive)
-  files = [x for x in files if is_video_file(x)] 
+  files = [x for x in files if is_video_file(x) or is_audio_file(x)] 
   files = [x for x in files if "output" not in x] 
   files = [x for x in files if "mp3" not in x] 
   apply_command_to_files(files, "ffmpeg -y -i '{0}' -c:a libmp3lame -q:a 0 -map a '{0}.output.mp3'")
