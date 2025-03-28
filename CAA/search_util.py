@@ -70,7 +70,7 @@ def money_to_headcnt(amount):
     if amount == 17: 
         return 2
     elif amount == 20: 
-        return 2
+        return 3
     elif amount ==24:
         return 2 
     assert (amount % 5) == 0, f"Wrong amount {amount}"
@@ -80,6 +80,7 @@ def money_to_headcnt(amount):
 class MemberInfo():
     def __init__(self, rec):
         self.info = rec 
+        assert self.info[MNO], "Member number is empty" + str(self.info)
 
 
     def has_mno(self):
@@ -164,13 +165,9 @@ def check_amount_names_headscnt(m):
     money_heads = money_to_headcnt(m.amount)
     logger.debug(f"money_heads {money_heads}") 
 
-    name_heads = len(m.cn_cns)
-    logger.debug(f"name_heads {name_heads}") 
-
     logger.debug(f"input heads {m.heads_count}") 
 
     return len(set([int(money_heads), 
-                    int(name_heads), 
                     int(m.heads_count)])) == 1
 
 

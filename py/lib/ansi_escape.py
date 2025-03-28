@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from constants import ANSI_START, ANSI_END, ANSI_RESET, TextColor, BgColor, TextStyle  
+from .constants import ANSI_START, ANSI_END, ANSI_RESET, TextColor, BgColor, TextStyle  
 
 class AnsiEscape:
     def __init__(self, text_color=None, bg_color=None, style=None):

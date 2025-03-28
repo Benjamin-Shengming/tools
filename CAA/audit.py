@@ -3,6 +3,7 @@
 from argparse import ArgumentParser 
 import pandas as pd
 from search_util import *
+import sys
 
 def single_true(iterable):
     i = iter(iterable)
@@ -120,7 +121,7 @@ def parse_args():
         "--mno", default=None, help="only analyze one member"
     )
     parser.add_argument(
-        "--input", default="./2024.xlsx", help="input excel file"
+        "--input", default="./2025.xlsx", help="input excel file"
     )
     parser.add_argument(
         "--output", default=None, help="output file"
@@ -143,7 +144,8 @@ def parse_args():
 
 def dispatch_to_cmd(args):
     if args.debug:
-        logger.setLevel(logging.DEBUG)
+        logger.remove() 
+        logger.add(sys.stdout, level="DEBUG")
     if args.list_unpaid:
         list_unpaid(args)
     if args.auto_fill:

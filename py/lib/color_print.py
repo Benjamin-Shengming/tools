@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
 
-from constants import LogLevel, Icon, ANSI_RESET, TextColor, BgColor, TextStyle
-from ansi_escape import AnsiEscape
-from log import setup_logger
+from .constants import LogLevel, Icon, ANSI_RESET, TextColor, BgColor, TextStyle
+from .ansi_escape import AnsiEscape
+from .log import setup_logger
 import logging
 
 class ColorPrint:
-    def __init__(self, logger=None, use_icons=True, bg_color=None, style=None):
+    def __init__(self, logger=None, use_icons=True, bg_color=None, style=None, prefix_log_level=False):
         self.logger = logger
-        self.set(use_icons, bg_color, style)
+        self.set(use_icons, bg_color, style, prefix_log_level)
 
-    def set(self, use_icons=True, bg_color=None, style=None):
+    def set(self, use_icons=True, bg_color=None, style=None, prefix_log_level=False):
         self.use_icons = use_icons
         self.bg_color = bg_color
         self.style = style 
+        self.prefix_log_level = prefix_log_level
 
     def reset(self):
         self.set(use_icons=True, bg_color=None, style=None)
@@ -22,7 +23,10 @@ class ColorPrint:
         text_color = LogLevel[level.upper()]
         icon = Icon[level.upper()].value if self.use_icons else ''
         ansi_escape = AnsiEscape(text_color=text_color, bg_color=self.bg_color, style=self.style)
-        formatted_message = f"{ansi_escape.ansi_wrap(icon + ' ' + level.upper() + ': ' + message)}"
+        if self.prefix_log_level:
+            formatted_message = f"{ansi_escape.ansi_wrap(icon + ' ' + level.upper() + ': ' + message)}"
+        else:
+            formatted_message = f"{ansi_escape.ansi_wrap(icon + ' ' + message)}"
         print(formatted_message)
         if self.logger:
             if level.lower() == "success":
