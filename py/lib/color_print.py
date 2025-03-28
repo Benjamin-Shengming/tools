@@ -20,6 +20,7 @@ class ColorPrint:
         self.set(use_icons=True, bg_color=None, style=None)
 
     def log_message(self, level, message):
+        message = message.to_string() if hasattr(message, 'to_string') else str(message)
         text_color = LogLevel[level.upper()]
         icon = Icon[level.upper()].value if self.use_icons else ''
         ansi_escape = AnsiEscape(text_color=text_color, bg_color=self.bg_color, style=self.style)
