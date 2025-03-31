@@ -16,7 +16,13 @@ fac = FuncAsCmd()
 
 def is_video_file(file):
   """Check if the file is a video file."""
-  return file.endswith('.mp4') or file.endswith('.mkv') or file.endswith('.avi') or file.endswith('.mov') or file.endswith('.flv') 
+  return file.endswith('.mp4') or file.endswith('.mkv') or file.endswith('.avi') or file.endswith('.mov') \
+    or file.endswith('.flv')  \
+    or file.endswith('.wmv')  \
+    or file.endswith('.webm') \
+    or file.endswith('.mpeg') \
+    or file.endswith('.mpg') \
+    or file.endswith('.m4v') 
 
 def is_audio_file(file):
   """Check if the file is an audio file."""
