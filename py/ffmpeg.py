@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import argparse
-from utils import apply_command_to_files
 from lib.fac import FuncAsCmd
 from lib.color_print import ColorPrint
 from lib.log import setup_logger
@@ -101,7 +100,9 @@ def to_mp4(args):
     commands = list(map(
         lambda x: "ffmpeg -y -i '{0}' -c:v copy -c:a copy '{0}.output.mp4'".format(x), files))
     rets = list(map(lambda x: run_cmd(x, log=pr), commands))
-    pr.print()
+    for x in rets:
+        if x:
+            pr.print(x)
 
 
 @fac.as_cmd()
@@ -111,8 +112,10 @@ def to_mp3(args):
     files = [x for x in files if is_video_file(x) or is_audio_file(x)]
     files = [x for x in files if "output" not in x]
     files = [x for x in files if "mp3" not in x]
-    apply_command_to_files(
-        files, "ffmpeg -y -i '{0}' -c:a libmp3lame -q:a 0 -map a '{0}.output.mp3'")
+    commands = list(map(
+        lambda x: "ffmpeg -y -i '{0}' -c:a libmp3lame -q:a 0 -map a '{0}.mp3'".format(x), files))
+    for cmd in commands:
+        run_cmd(cmd, log=pr)
 
 
 # ==================================================
