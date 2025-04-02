@@ -160,7 +160,7 @@ def main():
     args = parse_args()
     if args.debug:
         pr.print("Debug mode enabled")
-        log.setLevel(logging.DEBUG)
+        pr.setLevel(logging.DEBUG)
     fac.call_func_by_name(args.command, args)
 
 
