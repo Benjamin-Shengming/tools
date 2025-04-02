@@ -7,6 +7,7 @@ from lib.log import setup_logger
 from lib.local_shell import run_cmd
 import os
 from lib.folder import FolderHelper
+import logging
 
 
 log = setup_logger('ffmpeg_logger')
@@ -33,6 +34,17 @@ def is_audio_file(file):
     return False
 
 
+def filter_files(files, i_keywords, e_keywords):
+    """Filter files based on include and exclude keywords."""
+    if i_keywords:
+        files = [f for f in files if include_keywords(
+            get_file_name(f), i_keywords)]
+    if e_keywords:
+        files = [f for f in files if exclude_keywords(
+            get_file_name(f), e_keywords)]
+    return files
+
+
 def get_files(folder_path, recursive=True):
     """List all files in a folder, optionally recursively."""
     if os.path.isfile(folder_path):
@@ -40,6 +52,11 @@ def get_files(folder_path, recursive=True):
 
     fh = FolderHelper(folder_path)
     return fh.list_file(recursive=recursive)
+
+
+def get_file_name(file):
+    """Get the file name without path but with ext."""
+    return os.path.basename(file)
 
 
 def detect_max_vol(file):
@@ -58,13 +75,31 @@ def new_ext(file, ext):
     """Change the file extension."""
     return os.path.splitext(file)[0] + ext
 
+
+def include_keywords(file, kws):
+    """Check if the file name contains all keywords."""
+    pr.debug(f"keywards to incluce : {kws}")
+    for keyword in kws:
+        if keyword not in file:
+            pr.debug(f"{keyword} not in : {file}")
+            return False
+    return True
+
+
+def exclude_keywords(file, kws):
+    """Check if the file name contains any keywords."""
+    for keyword in kws:
+        if keyword in file:
+            pr.debug(f"{keyword} is in : {file}")
+            return False
+    return True
 # ==================================================
 # ffmpeg commands
 
 
 @fac.as_cmd(default=True)
-def detect_vol(args):
-    pr.print("===== detect max volume =====")
+def rename(args):
+    pr.print("===== rename files=====")
     files = get_files(args.path, args.recursive)
     files = [x for x in files if is_video_file(x) or is_audio_file(x)]
 
@@ -74,48 +109,27 @@ def detect_vol(args):
         pr.print(f"{f}: {v}dB")
 
 
-@fac.as_cmd(default=False)
-def max_vol(args):
-    pr.print("===== Max volume =====")
+@fac.as_cmd()
+def remove(args):
+    pr.print("===== Delete Files=====")
     files = get_files(args.path, args.recursive)
-    files = [x for x in files if is_video_file(x) or is_audio_file(x)]
-
-    # detect volume
-    ret = list(map(detect_max_vol, files))
-    for f, v in zip(files, ret):
-        if v and v >= 0:
-            continue
-        new_file = new_ext(f, ".output.mp4")
-        cmd = f'''ffmpeg -i '{f}' -af "volume={-v}
-            dB" -c:v copy '{new_file}' '''
-        ret = run_cmd(cmd, log=pr)
+    files = filter_files(files, args.include, args.exclude)
+    commands = list(map(lambda x: "rm '{0}'".format(x), files))
+    for c in commands:
+        ret = run_cmd(c, log=pr)
+        pr.print(ret)
 
 
 @fac.as_cmd()
-def to_mp4(args):
-    pr.print("===== to MP4 =====")
+def run_cmd_str(args):
+    pr.print("===== Run Command String =====")
     files = get_files(args.path, args.recursive)
-    files = [x for x in files if is_video_file(x)]
-    files = [x for x in files if "output" not in x]
-    commands = list(map(
-        lambda x: "ffmpeg -y -i '{0}' -c:v copy -c:a copy '{0}.output.mp4'".format(x), files))
-    rets = list(map(lambda x: run_cmd(x, log=pr), commands))
-    for x in rets:
-        if x:
-            pr.print(x)
-
-
-@fac.as_cmd()
-def to_mp3(args):
-    pr.print("===== to MP3 =====")
-    files = get_files(args.path, args.recursive)
-    files = [x for x in files if is_video_file(x) or is_audio_file(x)]
-    pr.print(files)
-    files = [x for x in files if "mp3" not in x]
-    commands = list(map(
-        lambda x: "ffmpeg -y -i '{0}' -c:a libmp3lame -q:a 0 -map a '{0}.mp3'".format(x), files))
+    files = [x for x in files if include_keywords(get_file_name(
+        x),  args.include) and exclude_keywords(get_file_name(x), args.exclude)]
+    commands = list(map(lambda x: args.cmdstr.format("'{}'".format(x)), files))
     for cmd in commands:
-        run_cmd(cmd, log=pr)
+        ret = run_cmd(cmd, log=pr)
+        pr.print(ret)
 
 
 # ==================================================
@@ -127,7 +141,16 @@ def parse_args():
     parser.add_argument("-p", "--path", type=str,
                         help="Path to the folder containing the files.")
     parser.add_argument("-r", "--recursive", action="store_true",
-                        default=False, help="Path to the folder containing the files.")
+                        default=False, help="Path to the folder containing files.")
+    parser.add_argument("-i", "--include", nargs='+',
+                        default=[], help="keywords in file name should include")
+    parser.add_argument("-e", "--exclude", nargs='+', default=[],
+                        help="keywords in file name should be excluded")
+
+    parser.add_argument("-s", "--cmdstr", default=None,
+                        help="command string to be executed for each file, use {} as placeholder")
+    parser.add_argument("--debug", default=False,
+                        help="debug mode", action="store_true")
     fac.add_funcs_as_cmds(parser, long_cmd_str="--command", short_cmd_str="-c")
     args = parser.parse_args()
     return args
@@ -135,6 +158,9 @@ def parse_args():
 
 def main():
     args = parse_args()
+    if args.debug:
+        pr.print("Debug mode enabled")
+        log.setLevel(logging.DEBUG)
     fac.call_func_by_name(args.command, args)
 
 
