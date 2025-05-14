@@ -9,9 +9,8 @@ import os
 from lib.folder import FolderHelper
 import logging
 
-
-log = setup_logger('ffmpeg_logger')
-pr = ColorPrint(log)
+setup_logger()
+pr = ColorPrint()
 fac = FuncAsCmd()
 
 

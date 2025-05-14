@@ -7,8 +7,7 @@ from lib.color_print import ColorPrint
 from lib.log import setup_logger
 from lib.local_shell import run_cmd 
 
-log = setup_logger('iter_folder_logger')
-pr = ColorPrint(log)
+pr = ColorPrint()
 
 def apply_command_to_files(files, command):
     # if it is a single file, apply the command to it

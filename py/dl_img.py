@@ -6,14 +6,13 @@ from urllib.parse import urljoin, urlparse
 import argparse
 from lib.fac import FuncAsCmd
 from lib.color_print import ColorPrint
-from lib.log import setup_logger
 from lib.local_shell import run_cmd
 import os
 from lib.folder import FolderHelper
+from lib.log import setup_logger
 
-
-log = setup_logger('download image logger')
-pr = ColorPrint(log)
+setup_logger()
+pr = ColorPrint()
 fac = FuncAsCmd()
 
 def get_response(url):

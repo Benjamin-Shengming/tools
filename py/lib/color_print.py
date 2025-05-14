@@ -3,7 +3,7 @@
 from .constants import LogLevel, Icon, ANSI_RESET, TextColor, BgColor, TextStyle
 from .ansi_escape import AnsiEscape
 from .log import setup_logger
-import logging
+from loguru import logger
 
 class ColorPrint:
     """
@@ -11,7 +11,7 @@ class ColorPrint:
     Supports logging and configurable use of icons, background colors, and text styles.
     """
 
-    def __init__(self, logger=None, use_icons=True, bg_color=None, style=None, prefix_log_level=False):
+    def __init__(self, use_icons=True, bg_color=None, style=None, prefix_log_level=False):
         """
         Initialize the ColorPrint instance.
 
@@ -21,7 +21,6 @@ class ColorPrint:
         :param style: Default text style for messages.
         :param prefix_log_level: Whether to prefix messages with the log level.
         """
-        self.logger = logger
         self.set(use_icons, bg_color, style, prefix_log_level)
 
     def set(self, use_icons=True, bg_color=None, style=None, prefix_log_level=False):
@@ -60,12 +59,12 @@ class ColorPrint:
         else:
             formatted_message = f"{ansi_escape.ansi_wrap(icon + ' ' + message)}"
         print(formatted_message)
-        if self.logger:
-            if level.lower() == "success":
-                level = "info"
-            if level.lower() == "fail":
-                level = "error"
-            self.logger.log(getattr(logging, level.upper()), message)
+
+        if level.lower() == "success":
+            level = "info"
+        if level.lower() == "fail":
+            level = "error"
+        logger.log(level.upper(), message)
 
     def info(self, message):
         """
@@ -113,13 +112,12 @@ class ColorPrint:
         ansi_escape = AnsiEscape(text_color=text_color, bg_color=self.bg_color, style=self.style)
         formatted_message = f"{ansi_escape.ansi_wrap(message)}"
         print(formatted_message)
-        if self.logger:
-            self.logger.log(logging.INFO, message)
+        logger.log("INFO", message)
 
 # Example usage
 if __name__ == "__main__":
-    logger = setup_logger('color_print_logger', 'color_print.log')
-    cp = ColorPrint(logger, use_icons=True, bg_color=BgColor.BG_BLUE, style=TextStyle.BOLD)
+    setup_logger()
+    cp = ColorPrint(use_icons=True, bg_color=BgColor.BG_BLUE, style=TextStyle.BOLD)
     cp.print("This is a message with white text and blue background.", TextColor.WHITE)
 
     cp.reset()

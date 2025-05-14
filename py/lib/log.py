@@ -1,22 +1,20 @@
+from loguru import logger
+import sys
 import logging
 import logging.handlers
 
-def setup_logger(name, log_file=None, level=logging.INFO):
+
+def setup_logger(log_file=None, 
+                 enable_console=False, 
+                 level="DEBUG"):
     """Function to setup a logger with syslog and optional file logging"""
-    formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+    logger.remove()  # Remove the default logger 
+    handler = logging.handlers.SysLogHandler(address='/dev/log')
+    logger.add(handler, level=level) 
 
-    # Syslog handler
-    syslog_handler = logging.handlers.SysLogHandler(address='/dev/log')
-    syslog_handler.setFormatter(formatter)
+    if enable_console:
+        logger.add(sys.stdout, level=level, colorize=True)
 
-    logger = logging.getLogger(name)
-    logger.setLevel(level)
-    logger.addHandler(syslog_handler)
-
-    # File handler (optional)
     if log_file:
-        file_handler = logging.FileHandler(log_file)
-        file_handler.setFormatter(formatter)
-        logger.addHandler(file_handler)
-
-    return logger
+        logger.add(log_file, level=level, rotation="1 MB", retention="10 days", compression="zip")
+    logger.info(f"Logger  is set up with level {level}")
