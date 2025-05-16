@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
 import argparse
-from lib.fac import FuncAsCmd
-from lib.color_print import ColorPrint
-from lib.log import setup_logger
-from lib.local_shell import run_cmd
-import os
-from lib.folder import FolderHelper
+from qutil.cli.fac import FuncAsCmd
+from qutil.console.color_print import ColorPrint
+from qutil.log.log import setup_logger
+from qutil.shell.local import run as run_cmd
+from qutil.filesystem.folder import FolderHelper
 import logging
+import os
 
 setup_logger()
 pr = ColorPrint()

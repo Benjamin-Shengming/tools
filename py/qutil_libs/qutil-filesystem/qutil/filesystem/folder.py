@@ -17,7 +17,7 @@ class FolderHelper(object):
     TODO Add more functions
         del_file_by_extension(extension, recursive=True)
     '''
-    def __init__(self, folder_path, topdown=True):
+    def __init__(self, folder_path="./", topdown=True):
         self.dir_path = folder_path
         self.topdown = topdown
 

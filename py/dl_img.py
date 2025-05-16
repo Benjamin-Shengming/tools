@@ -4,12 +4,11 @@ import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
 import argparse
-from lib.fac import FuncAsCmd
-from lib.color_print import ColorPrint
-from lib.local_shell import run_cmd
+from qutil.cli.fac import FuncAsCmd
+from qutil.console.color_print import ColorPrint
 import os
-from lib.folder import FolderHelper
-from lib.log import setup_logger
+from qutil.filesystem.folder import FolderHelper
+from qutil.log.log import setup_logger
 
 setup_logger()
 pr = ColorPrint()

@@ -5,14 +5,14 @@ import logging.handlers
 
 
 def setup_logger(log_file=None, 
-                 enable_console=False, 
+                 enable_log=False, 
                  level="DEBUG"):
     """Function to setup a logger with syslog and optional file logging"""
     logger.remove()  # Remove the default logger 
     handler = logging.handlers.SysLogHandler(address='/dev/log')
     logger.add(handler, level=level) 
 
-    if enable_console:
+    if enable_log:
         logger.add(sys.stdout, level=level, colorize=True)
 
     if log_file:

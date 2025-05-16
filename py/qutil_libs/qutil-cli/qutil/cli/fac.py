@@ -1,5 +1,7 @@
+from loguru import logger
+
 class FuncAsCmd:
-    def __init__(self, log=None):
+    def __init__(self, log=logger):
         self.map_funcs = {}
         self.default = ""
         self.hidden = set()

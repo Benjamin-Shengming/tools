@@ -2,7 +2,6 @@
 
 from .constants import LogLevel, Icon, ANSI_RESET, TextColor, BgColor, TextStyle
 from .ansi_escape import AnsiEscape
-from .log import setup_logger
 from loguru import logger
 
 class ColorPrint:
@@ -116,7 +115,6 @@ class ColorPrint:
 
 # Example usage
 if __name__ == "__main__":
-    setup_logger()
     cp = ColorPrint(use_icons=True, bg_color=BgColor.BG_BLUE, style=TextStyle.BOLD)
     cp.print("This is a message with white text and blue background.", TextColor.WHITE)
 
