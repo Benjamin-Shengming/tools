@@ -53,6 +53,39 @@ def get_files(folder_path, recursive=True):
     return fh.list_file(recursive=recursive)
 
 
+def get_folders(folder_path, recursive=True):
+    """List all folders in a folder, optionally recursively."""
+    if os.path.isfile(folder_path):
+        return [folder_path]
+
+    fh = FolderHelper(folder_path)
+    return fh.list_dir(recursive=recursive)
+
+
+def get_files_and_folders(folder_path, recursive=True):
+    """List all files and folders in a folder, optionally recursively."""
+    if os.path.isfile(folder_path):
+        return [folder_path]
+
+    fh = FolderHelper(folder_path)
+    files = fh.list_file(recursive=recursive)
+    folders = fh.list_dir(recursive=recursive)
+    return list(files) + list(folders)
+
+
+def get_opertion_objects(args):
+    """Get the operation type."""
+    if args.type == "file":
+        return get_files(args.path, args.recursive)
+    elif args.type == "folder":
+        return get_folders(args.path, args.recursive)
+    elif args.type == "both":
+        return get_files_and_folders(args.path, args.recursive)
+    else:
+        raise ValueError(
+            "Invalid operation type. Use 'file', 'folder', or 'both'.")
+
+
 def get_file_name(file):
     """Get the file name without path but with ext."""
     return os.path.basename(file)
@@ -77,10 +110,8 @@ def new_ext(file, ext):
 
 def include_keywords(file, kws):
     """Check if the file name contains all keywords."""
-    pr.debug(f"keywards to incluce : {kws}")
     for keyword in kws:
         if keyword not in file:
-            pr.debug(f"{keyword} not in : {file}")
             return False
     return True
 
@@ -89,7 +120,6 @@ def exclude_keywords(file, kws):
     """Check if the file name contains any keywords."""
     for keyword in kws:
         if keyword in file:
-            pr.debug(f"{keyword} is in : {file}")
             return False
     return True
 # ==================================================
@@ -99,7 +129,7 @@ def exclude_keywords(file, kws):
 @fac.as_cmd(default=True)
 def rename(args):
     pr.print("===== rename files=====")
-    files = get_files(args.path, args.recursive)
+    files = get_files_and_folders(args.path, args.recursive)
     files = [x for x in files if is_video_file(x) or is_audio_file(x)]
 
     # detect volume
@@ -122,13 +152,24 @@ def remove(args):
 @fac.as_cmd()
 def run_cmd_str(args):
     pr.print("===== Run Command String =====")
-    files = get_files(args.path, args.recursive)
+    files = get_opertion_objects(args)
     files = [x for x in files if include_keywords(get_file_name(
         x),  args.include) and exclude_keywords(get_file_name(x), args.exclude)]
     commands = list(map(lambda x: args.cmdstr.format("'{}'".format(x)), files))
-    for cmd in commands:
-        ret = run_cmd(cmd, log=pr)
-        pr.print(ret)
+    fails = []
+    for f, cmd in zip(files, commands):
+        ret = run_cmd(cmd, warn=True)
+        if ret["exit_code"] != 0:
+            pr.fail(f"{cmd}")
+            pr.fail(f"{ret['stderr'] + ret['stdout']}")
+            fails.append(f)
+        else:
+            pr.success(f"{cmd}")
+            pr.success(f"{ret['stdout'] + ret['stderr']}")
+        pr.print("\n")
+    if fails:
+        for f in fails:
+            pr.fail(f"{f}")
 
 
 # ==================================================
@@ -140,14 +181,18 @@ def parse_args():
     parser.add_argument("-p", "--path", type=str,
                         help="Path to the folder containing the files.")
     parser.add_argument("-r", "--recursive", action="store_true",
-                        default=False, help="Path to the folder containing files.")
+                        default=False,
+                        help="Path to the folder containing files.")
     parser.add_argument("-i", "--include", nargs='+',
-                        default=[], help="keywords in file name should include")
+                        default=[],
+                        help="keywords in file name should include")
     parser.add_argument("-e", "--exclude", nargs='+', default=[],
                         help="keywords in file name should be excluded")
 
     parser.add_argument("-s", "--cmdstr", default=None,
                         help="command string to be executed for each file, use {} as placeholder")
+    parser.add_argument("-t", "--type", default="folder",
+                        help="operate on folder or file, or both", )
     parser.add_argument("--debug", default=False,
                         help="debug mode", action="store_true")
     fac.add_funcs_as_cmds(parser, long_cmd_str="--command", short_cmd_str="-c")
@@ -158,8 +203,10 @@ def parse_args():
 def main():
     args = parse_args()
     if args.debug:
-        pr.print("Debug mode enabled")
-        pr.setLevel(logging.DEBUG)
+        pr.info("Debug mode enabled")
+        setup_logger(level="DEBUG")
+    else:
+        setup_logger(level="INFO")
     fac.call_func_by_name(args.command, args)
 
 

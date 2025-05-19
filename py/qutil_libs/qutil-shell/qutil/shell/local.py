@@ -1,11 +1,12 @@
 from loguru import logger
-from invoke import Responder
+from invoke.watchers import Responder
 import invoke
 
-def run(command: str, responses: dict={}, hide=True, warn=False, pty=True): 
+
+def run(command: str, responses: dict = {}, hide=True, warn=False, pty=True):
     """
     Runs a local shell command and responds to prompts using regex patterns.
-    
+
     Parameters:
     command (str): The shell command to run.
     responses (dict): Dict where keys are regex patterns and values are responses.
@@ -17,19 +18,18 @@ def run(command: str, responses: dict={}, hide=True, warn=False, pty=True):
     """
 
     watchers = [Responder(pattern=pattern, response=response + "\n" if not response.endswith("\n") else response)
-        for pattern, response in responses.items()]
+                for pattern, response in responses.items()]
 
-    result = invoke.run(command, 
-                        watchers=watchers, 
-                        hide=hide, 
+    logger.debug(f"Running command: {command}")
+    result = invoke.run(command,
+                        watchers=watchers,
+                        hide=hide,
                         warn=warn,
                         pty=pty)
 
     return {
-    "stdout": result.stdout,
-    "stderr": result.stderr,
-    "exit_code": result.exited
+        "stdout": result.stdout,
+        "stderr": result.stderr,
+        "exit_code": result.exited
 
     }
-
-

@@ -6,6 +6,7 @@ ANSI_START = "\033["
 ANSI_END = "m"
 ANSI_RESET = "\033[0m"
 
+
 class TextColor(Enum):
     BLUE = '34'
     RED = '31'
@@ -15,6 +16,7 @@ class TextColor(Enum):
     CYAN = '36'
     WHITE = '37'
     BLACK = '30'
+
 
 class BgColor(Enum):
     BG_BLUE = '44'
@@ -26,6 +28,7 @@ class BgColor(Enum):
     BG_WHITE = '47'
     BG_BLACK = '40'
 
+
 class TextStyle(Enum):
     BOLD = '1'
     BLINK = '5'
@@ -36,6 +39,7 @@ class TextStyle(Enum):
     HIDDEN = '8'
     DOUBLE_UNDERLINE = '21'
 
+
 class LogLevel(Enum):
     INFO = TextColor.BLUE.value
     WARNING = TextColor.YELLOW.value
@@ -43,6 +47,7 @@ class LogLevel(Enum):
     SUCCESS = TextColor.GREEN.value
     DEBUG = TextColor.MAGENTA.value
     FAIL = TextColor.RED.value
+
 
 class Icon(Enum):
     INFO = 'ℹ️'

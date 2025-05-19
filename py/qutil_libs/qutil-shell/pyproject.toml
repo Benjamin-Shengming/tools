@@ -24,3 +24,7 @@ package-dir = {"" = "."}
 [tool.setuptools.packages.find]
 include = ["qutil.*"]
 namespaces = true
+
+[tool.black]
+line-length = 79
+

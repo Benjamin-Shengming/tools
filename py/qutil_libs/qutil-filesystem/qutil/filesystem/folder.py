@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
+
+
 class FolderHelper(object):
     '''
     Class easy to manipulate files/folders under certain path
@@ -17,6 +19,7 @@ class FolderHelper(object):
     TODO Add more functions
         del_file_by_extension(extension, recursive=True)
     '''
+
     def __init__(self, folder_path="./", topdown=True):
         self.dir_path = folder_path
         self.topdown = topdown
