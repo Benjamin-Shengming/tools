@@ -16,8 +16,18 @@ fac = FuncAsCmd()
 
 def is_video_file(file):
     """Check if the file is a video file."""
-    video_exts = ['.mp4', '.mkv', '.avi', '.mov',
-                  '.flv', '.wmv', '.webm', '.mpeg', '.mpg', '.m4v']
+    video_exts = [
+        ".mp4",
+        ".mkv",
+        ".avi",
+        ".mov",
+        ".flv",
+        ".wmv",
+        ".webm",
+        ".mpeg",
+        ".mpg",
+        ".m4v",
+    ]
     for ext in video_exts:
         if file.endswith(ext):
             return True
@@ -26,7 +36,7 @@ def is_video_file(file):
 
 def is_audio_file(file):
     """Check if the file is an audio file."""
-    audio_exts = ['.mp3', '.wav', '.flac', '.aac', '.ogg']
+    audio_exts = [".mp3", ".wav", ".flac", ".aac", ".ogg"]
     for ext in audio_exts:
         if file.endswith(ext):
             return True
@@ -58,6 +68,7 @@ def new_ext(file, ext):
     """Change the file extension."""
     return os.path.splitext(file)[0] + ext
 
+
 # ==================================================
 # ffmpeg commands
 
@@ -86,8 +97,8 @@ def max_vol(args):
         if v and v >= 0:
             continue
         new_file = new_ext(f, ".output.mp4")
-        cmd = f'''ffmpeg -i '{f}' -af "volume={-v}
-            dB" -c:v copy '{new_file}' '''
+        cmd = f"""ffmpeg -i '{f}' -af "volume={-v}
+            dB" -c:v copy '{new_file}' """
         ret = run_cmd(cmd, log=pr)
 
 
@@ -97,8 +108,14 @@ def to_mp4(args):
     files = get_files(args.path, args.recursive)
     files = [x for x in files if is_video_file(x)]
     files = [x for x in files if "output" not in x]
-    commands = list(map(
-        lambda x: "ffmpeg -y -i '{0}' -c:v copy -c:a copy '{0}.output.mp4'".format(x), files))
+    commands = list(
+        map(
+            lambda x: "ffmpeg -y -i '{0}' -c:v copy -c:a copy '{0}.output.mp4'".format(
+                x
+            ),
+            files,
+        )
+    )
     rets = list(map(lambda x: run_cmd(x, log=pr), commands))
     for x in rets:
         if x:
@@ -112,8 +129,14 @@ def to_mp3(args):
     files = [x for x in files if is_video_file(x) or is_audio_file(x)]
     pr.print(files)
     files = [x for x in files if "mp3" not in x]
-    commands = list(map(
-        lambda x: "ffmpeg -y -i '{0}' -c:a libmp3lame -q:a 0 -map a '{0}.mp3'".format(x), files))
+    commands = list(
+        map(
+            lambda x: "ffmpeg -y -i '{0}' -c:a libmp3lame -q:a 0 -map a '{0}.mp3'".format(
+                x
+            ),
+            files,
+        )
+    )
     for cmd in commands:
         run_cmd(cmd, log=pr)
 
@@ -123,11 +146,21 @@ def to_mp3(args):
 # ==================================================
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Apply a command to all files in a folder.")
-    parser.add_argument("-p", "--path", type=str,
-                        help="Path to the folder containing the files.")
-    parser.add_argument("-r", "--recursive", action="store_true",
-                        default=False, help="Path to the folder containing the files.")
+        description="Apply a command to all files in a folder."
+    )
+    parser.add_argument(
+        "-p",
+        "--path",
+        type=str,
+        help="Path to the folder containing the files.",
+    )
+    parser.add_argument(
+        "-r",
+        "--recursive",
+        action="store_true",
+        default=False,
+        help="Path to the folder containing the files.",
+    )
     fac.add_funcs_as_cmds(parser, long_cmd_str="--command", short_cmd_str="-c")
     args = parser.parse_args()
     return args

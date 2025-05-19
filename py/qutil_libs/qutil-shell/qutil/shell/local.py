@@ -17,19 +17,23 @@ def run(command: str, responses: dict = {}, hide=True, warn=False, pty=True):
     dict: { 'stdout': str, 'stderr': str, 'exit_code': int }
     """
 
-    watchers = [Responder(pattern=pattern, response=response + "\n" if not response.endswith("\n") else response)
-                for pattern, response in responses.items()]
+    watchers = [
+        Responder(
+            pattern=pattern,
+            response=(
+                response + "\n" if not response.endswith("\n") else response
+            ),
+        )
+        for pattern, response in responses.items()
+    ]
 
     logger.debug(f"Running command: {command}")
-    result = invoke.run(command,
-                        watchers=watchers,
-                        hide=hide,
-                        warn=warn,
-                        pty=pty)
+    result = invoke.run(
+        command, watchers=watchers, hide=hide, warn=warn, pty=pty
+    )
 
     return {
         "stdout": result.stdout,
         "stderr": result.stderr,
-        "exit_code": result.exited
-
+        "exit_code": result.exited,
     }

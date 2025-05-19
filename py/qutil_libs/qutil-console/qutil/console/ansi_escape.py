@@ -1,6 +1,14 @@
 #!/usr/bin/env python3
 
-from .constants import ANSI_START, ANSI_END, ANSI_RESET, TextColor, BgColor, TextStyle  
+from .constants import (
+    ANSI_START,
+    ANSI_END,
+    ANSI_RESET,
+    TextColor,
+    BgColor,
+    TextStyle,
+)
+
 
 class AnsiEscape:
     def __init__(self, text_color=None, bg_color=None, style=None):
@@ -52,16 +60,24 @@ class AnsiEscape:
             codes.append(str(self._text_color_code))
         if self._bg_color_code:
             codes.append(str(self._bg_color_code))
-        
-        ansi_sequence = ANSI_START + ';'.join(codes) + ANSI_END
+
+        ansi_sequence = ANSI_START + ";".join(codes) + ANSI_END
         return f"{ansi_sequence}{text}{ANSI_RESET}"
 
+
 if __name__ == "__main__":
-    ta = AnsiEscape().set_text_color(TextColor.CYAN).set_bg_color(BgColor.BG_MAGENTA).set_style(TextStyle.BLINK)
+    ta = (
+        AnsiEscape()
+        .set_text_color(TextColor.CYAN)
+        .set_bg_color(BgColor.BG_MAGENTA)
+        .set_style(TextStyle.BLINK)
+    )
 
     print(ta.ansi_wrap("This is blinking cyan text with magenta background."))
     print("This is not colored text.")
-    ta.set_text_color(TextColor.RED).set_style(TextStyle.BLINK).set_bg_color(None)  
+    ta.set_text_color(TextColor.RED).set_style(TextStyle.BLINK).set_bg_color(
+        None
+    )
     print(ta.ansi_wrap("This is red and blink text."))
 
     ta.set_text_color(TextColor.RED).set_style(TextStyle.BOLD)

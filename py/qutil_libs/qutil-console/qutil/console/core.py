@@ -1,2 +1,2 @@
 def hello():
-  return "Hello from qutil.console"
+    return "Hello from qutil.console"

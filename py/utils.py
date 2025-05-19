@@ -5,9 +5,10 @@ import subprocess
 import argparse
 from lib.color_print import ColorPrint
 from lib.log import setup_logger
-from lib.local_shell import run_cmd 
+from lib.local_shell import run_cmd
 
 pr = ColorPrint()
+
 
 def apply_command_to_files(files, command):
     # if it is a single file, apply the command to it

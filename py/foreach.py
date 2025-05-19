@@ -16,8 +16,18 @@ fac = FuncAsCmd()
 
 def is_video_file(file):
     """Check if the file is a video file."""
-    video_exts = ['.mp4', '.mkv', '.avi', '.mov',
-                  '.flv', '.wmv', '.webm', '.mpeg', '.mpg', '.m4v']
+    video_exts = [
+        ".mp4",
+        ".mkv",
+        ".avi",
+        ".mov",
+        ".flv",
+        ".wmv",
+        ".webm",
+        ".mpeg",
+        ".mpg",
+        ".m4v",
+    ]
     for ext in video_exts:
         if file.endswith(ext):
             return True
@@ -26,7 +36,7 @@ def is_video_file(file):
 
 def is_audio_file(file):
     """Check if the file is an audio file."""
-    audio_exts = ['.mp3', '.wav', '.flac', '.aac', '.ogg']
+    audio_exts = [".mp3", ".wav", ".flac", ".aac", ".ogg"]
     for ext in audio_exts:
         if file.endswith(ext):
             return True
@@ -36,11 +46,13 @@ def is_audio_file(file):
 def filter_files(files, i_keywords, e_keywords):
     """Filter files based on include and exclude keywords."""
     if i_keywords:
-        files = [f for f in files if include_keywords(
-            get_file_name(f), i_keywords)]
+        files = [
+            f for f in files if include_keywords(get_file_name(f), i_keywords)
+        ]
     if e_keywords:
-        files = [f for f in files if exclude_keywords(
-            get_file_name(f), e_keywords)]
+        files = [
+            f for f in files if exclude_keywords(get_file_name(f), e_keywords)
+        ]
     return files
 
 
@@ -83,7 +95,8 @@ def get_opertion_objects(args):
         return get_files_and_folders(args.path, args.recursive)
     else:
         raise ValueError(
-            "Invalid operation type. Use 'file', 'folder', or 'both'.")
+            "Invalid operation type. Use 'file', 'folder', or 'both'."
+        )
 
 
 def get_file_name(file):
@@ -122,6 +135,8 @@ def exclude_keywords(file, kws):
         if keyword in file:
             return False
     return True
+
+
 # ==================================================
 # ffmpeg commands
 
@@ -153,8 +168,12 @@ def remove(args):
 def run_cmd_str(args):
     pr.print("===== Run Command String =====")
     files = get_opertion_objects(args)
-    files = [x for x in files if include_keywords(get_file_name(
-        x),  args.include) and exclude_keywords(get_file_name(x), args.exclude)]
+    files = [
+        x
+        for x in files
+        if include_keywords(get_file_name(x), args.include)
+        and exclude_keywords(get_file_name(x), args.exclude)
+    ]
     commands = list(map(lambda x: args.cmdstr.format("'{}'".format(x)), files))
     fails = []
     for f, cmd in zip(files, commands):
@@ -177,24 +196,51 @@ def run_cmd_str(args):
 # ==================================================
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Apply a command to all files in a folder.")
-    parser.add_argument("-p", "--path", type=str,
-                        help="Path to the folder containing the files.")
-    parser.add_argument("-r", "--recursive", action="store_true",
-                        default=False,
-                        help="Path to the folder containing files.")
-    parser.add_argument("-i", "--include", nargs='+',
-                        default=[],
-                        help="keywords in file name should include")
-    parser.add_argument("-e", "--exclude", nargs='+', default=[],
-                        help="keywords in file name should be excluded")
+        description="Apply a command to all files in a folder."
+    )
+    parser.add_argument(
+        "-p",
+        "--path",
+        type=str,
+        help="Path to the folder containing the files.",
+    )
+    parser.add_argument(
+        "-r",
+        "--recursive",
+        action="store_true",
+        default=False,
+        help="Path to the folder containing files.",
+    )
+    parser.add_argument(
+        "-i",
+        "--include",
+        nargs="+",
+        default=[],
+        help="keywords in file name should include",
+    )
+    parser.add_argument(
+        "-e",
+        "--exclude",
+        nargs="+",
+        default=[],
+        help="keywords in file name should be excluded",
+    )
 
-    parser.add_argument("-s", "--cmdstr", default=None,
-                        help="command string to be executed for each file, use {} as placeholder")
-    parser.add_argument("-t", "--type", default="folder",
-                        help="operate on folder or file, or both", )
-    parser.add_argument("--debug", default=False,
-                        help="debug mode", action="store_true")
+    parser.add_argument(
+        "-s",
+        "--cmdstr",
+        default=None,
+        help="command string to be executed for each file, use {} as placeholder",
+    )
+    parser.add_argument(
+        "-t",
+        "--type",
+        default="folder",
+        help="operate on folder or file, or both",
+    )
+    parser.add_argument(
+        "--debug", default=False, help="debug mode", action="store_true"
+    )
     fac.add_funcs_as_cmds(parser, long_cmd_str="--command", short_cmd_str="-c")
     args = parser.parse_args()
     return args

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from .constants import (LogLevel, Icon, TextColor, BgColor, TextStyle)
+from .constants import LogLevel, Icon, TextColor, BgColor, TextStyle
 from .ansi_escape import AnsiEscape
 from loguru import logger
 
@@ -12,8 +12,9 @@ class ColorPrint:
     and text styles.
     """
 
-    def __init__(self, use_icons=True, bg_color=None,
-                 style=None, prefix_log_level=False):
+    def __init__(
+        self, use_icons=True, bg_color=None, style=None, prefix_log_level=False
+    ):
         """
         Initialize the ColorPrint instance.
 
@@ -25,8 +26,9 @@ class ColorPrint:
         """
         self.set(use_icons, bg_color, style, prefix_log_level)
 
-    def set(self, use_icons=True, bg_color=None,
-            style=None, prefix_log_level=False):
+    def set(
+        self, use_icons=True, bg_color=None, style=None, prefix_log_level=False
+    ):
         """
         Configure the ColorPrint instance.
 
@@ -53,12 +55,16 @@ class ColorPrint:
         :param level: Log level (e.g., 'info', 'warning', 'error').
         :param message: The message to log and print.
         """
-        message = message.to_string() if hasattr(
-            message, 'to_string') else str(message)
+        message = (
+            message.to_string()
+            if hasattr(message, "to_string")
+            else str(message)
+        )
         text_color = LogLevel[level.upper()]
-        icon = Icon[level.upper()].value if self.use_icons else ''
+        icon = Icon[level.upper()].value if self.use_icons else ""
         ansi_escape = AnsiEscape(
-            text_color=text_color, bg_color=self.bg_color, style=self.style)
+            text_color=text_color, bg_color=self.bg_color, style=self.style
+        )
         if self.prefix_log_level:
             formatted_message = f"{ansi_escape.ansi_wrap(
                 icon + ' ' + level.upper() + ': ' + message)}"
@@ -77,37 +83,37 @@ class ColorPrint:
         """
         Log and print an info-level message.
         """
-        self.log_message('info', message)
+        self.log_message("info", message)
 
     def warning(self, message):
         """
         Log and print a warning-level message.
         """
-        self.log_message('warning', message)
+        self.log_message("warning", message)
 
     def error(self, message):
         """
         Log and print an error-level message.
         """
-        self.log_message('error', message)
+        self.log_message("error", message)
 
     def debug(self, message):
         """
         Log and print a debug-level message.
         """
-        self.log_message('debug', message)
+        self.log_message("debug", message)
 
     def success(self, message):
         """
         Log and print a success-level message.
         """
-        self.log_message('success', message)
+        self.log_message("success", message)
 
     def fail(self, message):
         """
         Log and print a failure-level message.
         """
-        self.log_message('fail', message)
+        self.log_message("fail", message)
 
     def print(self, message, text_color=None):
         """
@@ -117,7 +123,8 @@ class ColorPrint:
         :param text_color: The text color to use.
         """
         ansi_escape = AnsiEscape(
-            text_color=text_color, bg_color=self.bg_color, style=self.style)
+            text_color=text_color, bg_color=self.bg_color, style=self.style
+        )
         formatted_message = f"{ansi_escape.ansi_wrap(message)}"
         print(formatted_message)
         logger.log("INFO", message)
@@ -125,10 +132,13 @@ class ColorPrint:
 
 # Example usage
 if __name__ == "__main__":
-    cp = ColorPrint(use_icons=True, bg_color=BgColor.BG_BLUE,
-                    style=TextStyle.BOLD)
-    cp.print("This is a message with white text and blue background.",
-             TextColor.WHITE)
+    cp = ColorPrint(
+        use_icons=True, bg_color=BgColor.BG_BLUE, style=TextStyle.BOLD
+    )
+    cp.print(
+        "This is a message with white text and blue background.",
+        TextColor.WHITE,
+    )
 
     cp.reset()
     cp.info("This is an info message.")

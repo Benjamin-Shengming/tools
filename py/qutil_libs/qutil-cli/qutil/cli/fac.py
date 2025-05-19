@@ -1,5 +1,6 @@
 from loguru import logger
 
+
 class FuncAsCmd:
     def __init__(self, log=logger):
         self.map_funcs = {}
@@ -18,16 +19,18 @@ class FuncAsCmd:
 
         return inner
 
-    def debug(self, msg): 
+    def debug(self, msg):
         if self.log is None:
-            return  
+            return
         self.log.debug(msg)
-      
+
     def call_func_by_name(self, funcname, *args, **kargs):
         self.debug(f"Try to run {funcname}")
         return self.map_funcs[funcname](*args, **kargs)
 
-    def add_funcs_as_cmds(self, parser, long_cmd_str="--command", short_cmd_str="-c"):
+    def add_funcs_as_cmds(
+        self, parser, long_cmd_str="--command", short_cmd_str="-c"
+    ):
         all_cmds = set([k for k in self.map_funcs])
         all_cmds = list(all_cmds - self.hidden)
         all_cmds.sort()
