@@ -54,6 +54,32 @@ def get_dir_file_hashes(dir_path: Path, ignore_top_folder: bool = False) -> Dict
     return hashes
 
 @app.command()
+def show_file_hashes(source: Path):
+    """
+    Show file hashes for a single folder or tar file.
+    Tar files will be extracted to a temp folder first.
+    """
+    console = Console()
+    if source.is_file() and is_tar_extractable(source):
+        temp_dir = extract_tar_to_temp(source)
+        hashes = get_dir_file_hashes(temp_dir, ignore_top_folder=True)
+        shutil.rmtree(temp_dir)
+    elif source.is_dir():
+        hashes = get_dir_file_hashes(source)
+    else:
+        console.print(f"[yellow]⚠️ Skipping unsupported source: {source}[/yellow]")
+        return
+
+    table = Table(title=f"File Hashes for {source.name}")
+    table.add_column("File Path", style="bold")
+    table.add_column("SHA256 Hash", style="dim")
+
+    for rel_path, file_hash in sorted(hashes.items()):
+        table.add_row(rel_path, file_hash)
+
+    console.print(table)
+
+@app.command()
 def compare(sources: List[Path]):
     """
     Compare multiple folders or tar files.
