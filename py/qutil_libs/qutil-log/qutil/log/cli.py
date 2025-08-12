@@ -1,11 +1,15 @@
-from qutil.log import core
-import argparse
+from loguru import logger
+from qutil.log.log import setup_logger 
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Sample CLI using qutil.log")
-    parser.add_argument("--greet", action="store_true", help="Print a greeting")
-    args = parser.parse_args()
+    print("Log example")
+    setup_logger(log_file="example.log", console_log=True, level="DEBUG")
+    logger.debug("This is a debug message")
+    logger.info("This is an info message")
+    logger.warning("This is a warning message")
+    logger.error("This is an error message")
+    logger.critical("This is a critical message")
 
-    if args.greet:
-        print(core.hello())
+if __name__ == "__main__":
+    main()

@@ -3,7 +3,12 @@ from invoke.watchers import Responder
 import invoke
 
 
-def run(command: str, responses: dict = {}, hide=True, warn=False, pty=True):
+def run(command: str, 
+        responses: dict = {}, 
+        hide=True, 
+        warn=False, 
+        pty=True,
+        return_as_str = False) ->str|dict: 
     """
     Runs a local shell command and responds to prompts using regex patterns.
 
@@ -32,8 +37,11 @@ def run(command: str, responses: dict = {}, hide=True, warn=False, pty=True):
         command, watchers=watchers, hide=hide, warn=warn, pty=pty
     )
 
-    return {
-        "stdout": result.stdout,
-        "stderr": result.stderr,
-        "exit_code": result.exited,
-    }
+    if return_as_str:
+        return result.stdout + result.stderr
+    else:
+        return {
+            "stdout": result.stdout,
+            "stderr": result.stderr,
+            "exit_code": result.exited,
+        }
