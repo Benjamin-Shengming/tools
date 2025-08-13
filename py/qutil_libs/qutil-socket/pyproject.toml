@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qutil-socket"
+version = "0.1.0"
+description = "A namespace package qutil.socket"
+authors = [
+    { name = "qutil", email = "qutil@example.com" }
+]
+license = "MIT"  # Or your license identifier, e.g., "Apache-2.0"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "invoke>=2.2.0",
+    "loguru>=0.7.2",
+]
+license-files = ["LICENSE"]  # <-- Move here
+
+[project.scripts]
+qutil-socket= "qutil.socket.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "."}
+
+[tool.setuptools.packages.find]
+include = ["qutil.*"]
+namespaces = true
+
+[tool.black]
+line-length = 79
+
