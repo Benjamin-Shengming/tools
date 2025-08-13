@@ -18,7 +18,6 @@ class ColorPrint:
         """
         Initialize the ColorPrint instance.
 
-        :param logger: Optional logger instance for logging messages.
         :param use_icons: Whether to include icons in the output.
         :param bg_color: Default background color for messages.
         :param style: Default text style for messages.
