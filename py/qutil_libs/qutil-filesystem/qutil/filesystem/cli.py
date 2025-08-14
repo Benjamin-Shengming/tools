@@ -1,4 +1,5 @@
 from qutil.filesystem import folder
+from qutil.log.log import setup_log
 import argparse
 
 
@@ -7,13 +8,30 @@ def main():
         description="Sample CLI using qutil.filesystem"
     )
     parser.add_argument(
-        "--list",
-        action="store_true",
-        help="List files in the current directory",
+        "--folder",
+        default="./",
+        help="Directory path to investigate",
+        
     )
     args = parser.parse_args()
 
     folder_instance = folder.FolderHelper()
-    folder_instance.list_file(
+
+    print("======= All files: ========")
+    for x in folder_instance.list_file(
         recursive=True
-    )  # List files in the current directory
+    ):
+        print(x)  # List files in the current directory
+
+    print("======= All folders: ========")
+    for x in folder_instance.list_dir(
+        recursive=True
+    ):  # List folders in the current directory  
+        print(x)
+
+
+    print("======= Search first file: ========")
+    first_file = folder_instance.search_first_file(
+        condition_func=lambda f: f.endswith(".py"), recursive=True
+    )
+    print(first_file)

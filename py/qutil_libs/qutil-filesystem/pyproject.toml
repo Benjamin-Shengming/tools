@@ -12,7 +12,9 @@ authors = [
 license = "MIT"  # Or your license identifier, e.g., "Apache-2.0"
 readme = "README.md"
 requires-python = ">=3.8"
-dependencies = []
+dependencies = [
+    "loguru>=0.7.2"
+]
 license-files = ["LICENSE"]  # <-- Move here
 
 [project.scripts]

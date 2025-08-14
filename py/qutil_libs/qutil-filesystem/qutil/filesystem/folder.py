@@ -1,6 +1,41 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import re
 import os
+
+
+def natural_path_compare(a, b):
+    """
+    Compare two paths using natural order (numbers as numbers, not strings).
+    Returns -1 if a < b, 0 if a == b, 1 if a > b.
+    """
+
+    def split_key(path):
+        # Split path into components, then split each component into digit/non-digit parts
+        parts = []
+        for part in re.split(r"[\/]", path):
+            # Split into digit and non-digit chunks
+            for chunk in re.split(r"(\d+)", part):
+                if chunk.isdigit():
+                    parts.append(int(chunk))
+                else:
+                    parts.append(chunk)
+        return parts
+
+    ka = split_key(a)
+    kb = split_key(b)
+    # Compare component-wise
+    for x, y in zip(ka, kb):
+        if x == y:
+            continue
+        if type(x) == type(y):
+            return -1 if x < y else 1
+        # Numbers come before strings
+        return -1 if isinstance(x, int) else 1
+    # If all components so far are equal, shorter path is less
+    if len(ka) == len(kb):
+        return 0
+    return -1 if len(ka) < len(kb) else 1
 
 
 class FolderHelper(object):
@@ -24,38 +59,35 @@ class FolderHelper(object):
         self.dir_path = folder_path
         self.topdown = topdown
 
-    #  internal help functions to iterate files/folders and apply action
-    def _apply_action_by_condition(self, action_func, condition_func):
-        """action_func and condition_func accept a path as first parameter"""
-        for root, dirs, files in os.walk(self.dir_path, topdown=self.topdown):
-            # handle files
-            for f_name in files:
-                f_path = os.path.join(root, f_name)
-                if condition_func(f_path):
-                    action_func(f_path)
-            # handle dirs
-            for d_name in dirs:
-                d_path = os.path.join(root, d_name)
-                if condition_func(d_path):
-                    action_func(d_path)
-
-    def _apply_file_action_by_condition(self, action_func, condition_func):
-        """action_func and condition_func accept a path as first parameter"""
+    # Generic file and dir iterators
+    def iter_files(self, recursive=True):
         for root, _, files in os.walk(self.dir_path, topdown=self.topdown):
-            # handle files
+            if not recursive and root != self.dir_path:
+                continue
             for f_name in files:
-                f_path = os.path.join(root, f_name)
-                if condition_func(f_path):
-                    action_func(f_path)
+                yield os.path.join(root, f_name)
 
-    def _apply_dir_action_by_condition(self, action_func, condition_func):
-        """action_func and condition_func accept path as first parameter"""
+    def iter_dirs(self, recursive=True):
         for root, dirs, _ in os.walk(self.dir_path, topdown=self.topdown):
-            # handle dirs
+            if not recursive and root != self.dir_path:
+                continue
             for d_name in dirs:
-                d_path = os.path.join(root, d_name)
-                if condition_func(d_path):
-                    action_func(d_path)
+                yield os.path.join(root, d_name)
+
+    # Internal helpers using the iterators
+    def _apply_file_action_by_condition(
+        self, action_func, condition_func, recursive=True
+    ):
+        for f_path in self.iter_files(recursive=recursive):
+            if condition_func(f_path):
+                action_func(f_path)
+
+    def _apply_dir_action_by_condition(
+        self, action_func, condition_func, recursive=True
+    ):
+        for d_path in self.iter_dirs(recursive=recursive):
+            if condition_func(d_path):
+                action_func(d_path)
 
     # interfaces exposed
     def del_empty_sub_dir(self):
@@ -90,12 +122,7 @@ class FolderHelper(object):
         if recursive:True,  list all files, including subdirectories' files
         if recursive:False,  only list direct child files
         """
-        for root, _, files in os.walk(self.dir_path, topdown=self.topdown):
-            if not recursive and root != self.dir_path:
-                continue
-            for f_name in files:
-                f_path = os.path.join(root, f_name)
-                yield f_path
+        yield from self.iter_files(recursive=recursive)
 
     def list_dir(self, recursive=True):
         """
@@ -103,10 +130,22 @@ class FolderHelper(object):
         if recursive:True,  list all folders, including subdirectories' folders
         if recursive:False,  only list direct child folders
         """
-        for root, dirs, _ in os.walk(self.dir_path, topdown=self.topdown):
-            if not recursive and root != self.dir_path:
+        yield from self.iter_dirs(recursive=recursive)
+
+    def search_first_file(
+        self, compare_func=natural_path_compare, condition_func=None, recursive=True
+    ):
+        """
+        search the first file under folder
+        if recursive:True,  search the first file, including subdirectories' files
+        if recursive:False,  only search direct child files
+        use compare_func to determine order
+        use condition_func to filter files
+        """
+        first_file = None
+        for f_path in self.list_file(recursive=recursive):
+            if condition_func and not condition_func(f_path):
                 continue
-            # handle folder
-            for d_name in dirs:
-                d_path = os.path.join(root, d_name)
-                yield d_path
+            if first_file is None or compare_func(f_path, first_file) < 0:
+                first_file = f_path
+        return first_file
