@@ -13,7 +13,8 @@ license = "MIT"  # Or your license identifier, e.g., "Apache-2.0"
 readme = "README.md"
 requires-python = ">=3.8"
 dependencies = [
-    "loguru>=0.7.2"
+    "loguru>=0.7.2",
+    "qutil.log"
 ]
 license-files = ["LICENSE"]  # <-- Move here
 
