@@ -149,3 +149,58 @@ class FolderHelper(object):
             if first_file is None or compare_func(f_path, first_file) < 0:
                 first_file = f_path
         return first_file
+
+    def search_first_dir(
+        self, compare_func=natural_path_compare, condition_func=None, recursive=True
+    ):
+        """
+        search the first dir under folder
+        if recursive:True,  search the first dir, including subdirectories' dirs
+        if recursive:False,  only search direct child dirs
+        use compare_func to determine order
+        use condition_func to filter dirs
+        """
+        first_dir = None
+        for d_path in self.list_dir(recursive=recursive):
+            if condition_func and not condition_func(d_path):
+                continue
+            if first_dir is None or compare_func(d_path, first_dir) < 0:
+                first_dir = d_path
+        return first_dir    
+
+    def search_last_file(
+        self, compare_func=natural_path_compare, condition_func=None, recursive=True
+    ):
+        """
+        search the last file under folder
+        if recursive:True,  search the last file, including subdirectories' files
+        if recursive:False,  only search direct child files
+        use compare_func to determine order
+        use condition_func to filter files
+        """
+        last_file = None
+        for f_path in self.list_file(recursive=recursive):
+            if condition_func and not condition_func(f_path):
+                continue
+            if last_file is None or compare_func(f_path, last_file) > 0:
+                last_file = f_path
+        return last_file    
+
+    def search_last_dir(
+        self, compare_func=natural_path_compare, condition_func=None, recursive=True
+    ):
+        """
+        search the last dir under folder
+        if recursive:True,  search the last dir, including subdirectories' dirs
+        if recursive:False,  only search direct child dirs
+        use compare_func to determine order
+        use condition_func to filter dirs
+        """
+        last_dir = None
+        for d_path in self.list_dir(recursive=recursive):
+            if condition_func and not condition_func(d_path):
+                continue
+            if last_dir is None or compare_func(d_path, last_dir) > 0:
+                last_dir = d_path
+        return last_dir
+    
