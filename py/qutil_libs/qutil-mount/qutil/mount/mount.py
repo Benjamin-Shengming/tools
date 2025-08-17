@@ -1,0 +1,56 @@
+import os
+from contextlib import contextmanager
+from loguru import logger
+from qutil.shell.local import run as run_command
+
+
+def umount(mount_point):
+    """
+    Unmount mount_point.
+    """
+    command = f"sudo umount -lf {mount_point}"
+    run_command(command)
+
+def cifs_mount(cifs_ip, cifs_path, mount_point, user, password):
+    """
+    Mount a CIFS share.
+    """
+    os.makedirs(mount_point, exist_ok=True)
+    cifs_full_path = f"//{cifs_ip}/{cifs_path.strip('/')}"
+    command = f"sudo mount -t cifs {cifs_full_path} {mount_point} -o ro,username={user},password={password},vers=2.1"
+    return run_command(command)
+
+def sshfs_mount(ssh_ip, ssh_path, mount_point, user, password):
+    """
+    Mount a remote directory over SSHFS.
+    """
+    os.makedirs(mount_point, exist_ok=True)
+    command = f"echo {password} | sshfs {user}@{ssh_ip}:{ssh_path} {mount_point} -o password_stdin"
+    return run_command(command)
+
+# Context manager to temporarily set environment variables
+@contextmanager
+def sshfs(ssh_ip, ssh_path, mount_point, user, password):
+    """
+    Temporarily set environment variables for SSHFS mount.
+    """
+    exit_code = 1 
+    try:
+        ret = sshfs_mount(ssh_ip, ssh_path, mount_point, user, password)
+        exit_code = ret["exit_code"]
+        yield
+    finally:
+        if exit_code == 0:
+            umount(mount_point)
+
+
+@contextmanager 
+def cifs(cifs_ip, cifs_path, mount_point, user, password):
+    """
+    Temporarily set environment variables for CIFS mount.
+    """
+    try:
+        cifs_mount(cifs_ip, cifs_path, mount_point, user, password)
+        yield
+    finally:
+        umount(mount_point)
