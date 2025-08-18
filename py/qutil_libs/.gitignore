@@ -3,6 +3,5 @@ __pycache__/
 *.pyo
 *.egg-info/
 dist/
-build/
 *.whl
 *.tar.gz
