@@ -1,8 +1,9 @@
+# Ignore wheel and source distribution files
+*.whl
+*.tar.gz
 __pycache__/
 *.pyc
 *.pyo
 *.egg-info/
 dist/
 build/
-*.whl
-*.tar.gz
