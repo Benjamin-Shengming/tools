@@ -15,8 +15,8 @@ requires-python = ">=3.8"
 dependencies = [
     "invoke>=2.2.0",
     "loguru>=0.7.2",
-    "qutil.log",
-    "qutil.shell", 
+    "qutil.log>=0.1.0",
+    "qutil.shell>=0.1.0"
 ]
 license-files = ["LICENSE"]  # <-- Move here
 

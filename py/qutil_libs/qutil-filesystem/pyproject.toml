@@ -14,7 +14,7 @@ readme = "README.md"
 requires-python = ">=3.8"
 dependencies = [
     "loguru>=0.7.2",
-    "qutil.log"
+    "qutil.log>=0.1.0",
 ]
 license-files = ["LICENSE"]  # <-- Move here
 
