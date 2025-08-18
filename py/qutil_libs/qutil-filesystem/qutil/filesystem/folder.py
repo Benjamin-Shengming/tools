@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 import re
 import os
+import shutil 
+from timestamp import timestamp
 
 
 def natural_path_compare(a, b):
@@ -203,4 +205,12 @@ class FolderHelper(object):
             if last_dir is None or compare_func(d_path, last_dir) > 0:
                 last_dir = d_path
         return last_dir
-    
+
+    def create_timestamp_subdir(self):
+        """
+        Create a subdirectory with the given timestamp under the folder.
+        """
+        timestamp_str = timestamp.strftime("%Y%m%d_%H%M%S")
+        subdir_path = os.path.join(self.path, timestamp_str)
+        os.makedirs(subdir_path, exist_ok=True)
+        return subdir_path
