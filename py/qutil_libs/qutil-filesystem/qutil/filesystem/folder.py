@@ -3,7 +3,7 @@
 import re
 import os
 import shutil 
-from timestamp import timestamp
+from datetime import datetime  # <-- Fix: use standard datetime
 
 
 def natural_path_compare(a, b):
@@ -210,7 +210,7 @@ class FolderHelper(object):
         """
         Create a subdirectory with the given timestamp under the folder.
         """
-        timestamp_str = timestamp.strftime("%Y%m%d_%H%M%S")
-        subdir_path = os.path.join(self.path, timestamp_str)
+        timestamp_str = datetime.now().strftime("%Y%m%d_%H%M%S")  # <-- Fix: use datetime.now()
+        subdir_path = os.path.join(self.dir_path, timestamp_str)   # <-- Fix: use self.dir_path
         os.makedirs(subdir_path, exist_ok=True)
         return subdir_path

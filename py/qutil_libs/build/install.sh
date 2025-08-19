@@ -4,6 +4,8 @@ set -e
 set -x
 
 ./build.sh
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Install all qutil-* packages by name using --find-links, to mimic PyPI behavior
 for whl in "$SCRIPT_DIR"/qutil*.whl; do
     if [ -f "$whl" ]; then

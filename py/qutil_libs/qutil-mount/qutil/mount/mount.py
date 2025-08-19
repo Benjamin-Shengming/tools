@@ -3,6 +3,12 @@ from contextlib import contextmanager
 from loguru import logger
 from qutil.shell.local import run as run_command
 
+def fuserumount(mount_point): 
+    """
+    Unmount mount_point using fusermount.
+    """
+    command = f"fusermount -u {mount_point}"
+    run_command(command)
 
 def umount(mount_point):
     """
@@ -41,7 +47,7 @@ def sshfs(ssh_ip, ssh_path, mount_point, user, password):
         yield
     finally:
         if exit_code == 0:
-            umount(mount_point)
+            fuserumount(mount_point)
 
 
 @contextmanager 
