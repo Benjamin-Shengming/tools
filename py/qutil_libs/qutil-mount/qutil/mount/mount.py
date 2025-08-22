@@ -14,7 +14,7 @@ def umount(mount_point):
     """
     Unmount mount_point.
     """
-    command = f"sudo umount -lf {mount_point}"
+    command = f"umount -lf {mount_point}"
     run_command(command)
 
 def cifs_mount(cifs_ip, cifs_path, mount_point, user, password):
@@ -23,7 +23,7 @@ def cifs_mount(cifs_ip, cifs_path, mount_point, user, password):
     """
     os.makedirs(mount_point, exist_ok=True)
     cifs_full_path = f"//{cifs_ip}/{cifs_path.strip('/')}"
-    command = f"sudo mount -t cifs {cifs_full_path} {mount_point} -o ro,username={user},password={password},vers=2.1"
+    command = f"mount -t cifs {cifs_full_path} {mount_point} -o ro,username={user},password={password},vers=2.1"
     return run_command(command)
 
 def sshfs_mount(ssh_ip, ssh_path, mount_point, user, password):
