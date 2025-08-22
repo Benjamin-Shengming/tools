@@ -11,6 +11,6 @@ pip install .
 ## Usage
 
 ```python
-from qutil_xxx import hello
+from qutil.xxx import hello
 print(hello())
 ```
