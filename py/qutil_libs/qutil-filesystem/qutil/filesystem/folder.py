@@ -208,7 +208,7 @@ class FolderHelper(object):
 
     def create_timestamp_subdir(self):
         """
-        Create a subdirectory with the given timestamp under the folder.
+        Create a subdirectory with the current timestamp under the folder.
         """
         timestamp_str = datetime.now().strftime("%Y%m%d_%H%M%S")  # <-- Fix: use datetime.now()
         subdir_path = os.path.join(self.dir_path, timestamp_str)   # <-- Fix: use self.dir_path
