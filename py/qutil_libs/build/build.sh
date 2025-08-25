@@ -16,6 +16,6 @@ for dir in ${SCRIPT_DIR}/../qutil-*/; do
                 ;;
         esac
         echo "Building wheel for $dir..."
-        pip wheel "$dir" --wheel-dir "$SCRIPT_DIR" --no-deps
+        pip3 wheel "$dir" --wheel-dir "$SCRIPT_DIR" --no-deps
     fi
 done
