@@ -17,4 +17,4 @@ done
 
 echo "All qutil-* wheel files built and installed"
 
-pip freeze | grep '^qutil'
+pip3 freeze | grep '^qutil'
