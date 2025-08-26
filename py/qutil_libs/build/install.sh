@@ -11,7 +11,7 @@ for whl in "$SCRIPT_DIR"/qutil*.whl; do
     if [ -f "$whl" ]; then
         pkg_name=$(basename "$whl" | sed -E 's/-[0-9].*$//')
         echo "Installing $pkg_name from $SCRIPT_DIR..."
-        pip3 install --user "$pkg_name" --break-system-packages --find-links "$SCRIPT_DIR"
+        pip3 install --user "$pkg_name" --break-system-packages --find-links "$SCRIPT_DIR" --force-reinstall
     fi
 done
 

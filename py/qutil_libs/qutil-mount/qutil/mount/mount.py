@@ -31,8 +31,8 @@ def sshfs_mount(ssh_ip, ssh_path, mount_point, user, password):
     Mount a remote directory over SSHFS.
     """
     os.makedirs(mount_point, exist_ok=True)
-    command = f"sshfs {user}@{ssh_ip}:{ssh_path} {mount_point} "
-    return run_command(command, {"* password:": password})
+    command = f"echo {password} | sshfs -o password_stdin -o StrictHostKeyChecking=no {user}@{ssh_ip}:{ssh_path} {mount_point} "
+    return run_command(command, pty=False)
 
 # Context manager to temporarily set environment variables
 @contextmanager
