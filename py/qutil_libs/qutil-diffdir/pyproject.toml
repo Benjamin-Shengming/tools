@@ -1,0 +1,27 @@
+[project]
+name = "qutil-diffdir"
+version = "0.1.0"
+description = "Short description of qutil-diffdir."
+authors = [{ name = "Your Name", email = "your@email.com" }]
+readme = "README.md"
+
+requires-python = ">=3.7"
+license = { file = "LICENSE" }
+dependencies = []
+
+[tool.setuptools.packages.find]
+include = ["qutil.*"]
+namespaces = true
+
+[project.urls]
+Homepage = "https://github.com/yourname/qutil-diffdir"
+
+[project.scripts]
+qutil-diffdir = "qutil.diffdir.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "."}
+
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

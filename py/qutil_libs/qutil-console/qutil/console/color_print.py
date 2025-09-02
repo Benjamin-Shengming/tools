@@ -12,6 +12,7 @@ from .constants import (Icon,
 from loguru import logger
 from rich.console import Console
 from rich.text import Text
+from rich.table import Table
 
 
 class ColorPrint:
@@ -80,3 +81,25 @@ class ColorPrint:
 
     def print(self, message, style=None):
         self.log_message("info", message, use_icon=False, style=style, prefix_log_level=False)
+
+
+def to_rich_table(headers, rows, column_colors=None, title=None):
+    """
+    Create a rich Table with colored columns.
+    Args:
+        headers (list[str]): Column headers.
+        rows (list[list]): Rows of data.
+        column_colors (list[str|None]): List of rich style strings for each column, or None.
+        title (str|None): Optional table title.
+    Returns:
+        Table: rich Table object ready to print.
+    """
+    table = Table(title=title)
+    if column_colors is None:
+        column_colors = [None] * len(headers)
+    for header, color in zip(headers, column_colors):
+        table.add_column(str(header), style=color if color else None)
+    for row in rows:
+        str_row = [str(cell) for cell in row]
+        table.add_row(*str_row)
+    return table

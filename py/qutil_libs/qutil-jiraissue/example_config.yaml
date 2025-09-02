@@ -1,0 +1,10 @@
+server: "https://qljira01:8443/"
+username: "shu"
+password: "<password>"
+jql: >
+    project = KMS AND (labels in (Deakin-3.3) OR 'Epic Link' = 'Issues for R3.3')
+    AND status in (Open, Triage, 'In Progress', 'Code Review', Testing, Reopened, Resolved)
+    AND issuekey in (KMS-9730, KMS-9731, KMS-9732, KMS-9733, KMS-9734, KMS-9735,
+    KMS-9736, KMS-9737, KMS-9738, KMS-9739, KMS-9740, KMS-9741, KMS-9742, KMS-9839)
+    ORDER BY issuekey ASC
+
