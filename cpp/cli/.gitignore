@@ -20,7 +20,7 @@ build/
 .sconsign*
 
 # Ignore executables
-cli
+run
 
 # Ignore editor files
 *~
