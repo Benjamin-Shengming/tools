@@ -1,0 +1,18 @@
+# SConscript file for building cli.cpp
+import os
+
+# Import SCons symbols
+from SCons.Script import Environment 
+
+# Create the default environment
+env = Environment()
+
+# Add include path for CLI11.hpp if needed
+cli11_include = os.path.join('lib', 'cli')
+env.Append(CPPPATH=[cli11_include])
+
+# Source file
+sources = ['cli.cpp']
+
+# Build the executable
+env.Program(target='cli', source=sources)

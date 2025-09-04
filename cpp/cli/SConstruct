@@ -1,0 +1,6 @@
+# SConstruct file for building cli.cpp using SCons
+
+from SCons.Script import SConscript
+
+# Import the SConscript from the current directory with the environment
+SConscript('SConscript')
