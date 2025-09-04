@@ -1,0 +1,17 @@
+# Ignore build artifacts and temporary files for C++ projects
+build/
+*.o
+*.obj
+*.exe
+*.out
+*.a
+*.so
+*.dll
+*.dylib
+*.log
+*.tmp
+*.swp
+*.swo
+*.sconsign*
+*.pyc
+__pycache__/
