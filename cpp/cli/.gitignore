@@ -1,3 +1,8 @@
+# Ignore spdlog build/test files
+spdlog/build/
+spdlog/.vs/
+spdlog/.vscode/
+spdlog/.idea/
 # Ignore build artifacts
 *.o
 *.obj

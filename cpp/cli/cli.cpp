@@ -1,9 +1,23 @@
-#include <CLI11.hpp>
+#include <spdlog/spdlog.h>
+#include "lib/cli/CLI11.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
 
+#include "add.h"
+#include "multiply.h"
+#include "stacktrace.h"
+#include "log.h"
+
+
+
 int main(int argc, char** argv) {
+    setup_log(1);
+    spdlog::info("Starting CLI application info");
+    spdlog::debug("Starting CLI application debug");
+    stacktrace::install_signal_handlers();
+
+    // TEST: Intentionally crash to verify stacktrace handler
     CLI::App app{"Example CLI11 tool mimicking Python Typer"};
 
     // ------------------------
@@ -15,59 +29,24 @@ int main(int argc, char** argv) {
     app.add_flag("-v,--verbose", verbose, "Enable verbose output");
     app.add_option("-c,--config", config_file, "Path to config file");
 
-    // ------------------------
+
     // Subcommand: add
-    // ------------------------
     auto add_cmd = app.add_subcommand("add", "Add two numbers");
-    add_cmd->allow_extras(); // allow unknown options
+    add_cmd->allow_extras();
+    handle_add(add_cmd);
 
-    int a, b;
-    add_cmd->add_option("a", a, "First number")->required();
-    add_cmd->add_option("b", b, "Second number")->required();
-
-    // ------------------------
+    spdlog::debug("After handle_add");
     // Subcommand: multiply
-    // ------------------------
     auto multiply_cmd = app.add_subcommand("multiply", "Multiply two numbers");
     multiply_cmd->allow_extras();
-
-    int x, y;
-    multiply_cmd->add_option("x", x, "First number")->required();
-    multiply_cmd->add_option("y", y, "Second number")->required();
+    handle_multiply(multiply_cmd);
 
     // ------------------------
     // Parse arguments
     // ------------------------
-    CLI11_PARSE(app, argc, argv);
 
-    // ------------------------
-    // Handle subcommands
-    // ------------------------
-    if (*add_cmd) {
-    std::cout << "Add: " << a << " + " << b << " = " << (a + b) << std::endl;
-        auto extras = add_cmd->remaining();
-        if (!extras.empty()) {
-            std::cout << "Extra args for add:";
-            for (const auto &e : extras) std::cout << " " << e;
-            std::cout << std::endl;
-        }
-    } else if (*multiply_cmd) {
-    std::cout << "Multiply: " << x << " * " << y << " = " << (x * y) << std::endl;
-        auto extras = multiply_cmd->remaining();
-        if (!extras.empty()) {
-            std::cout << "Extra args for multiply:";
-            for (const auto &e : extras) std::cout << " " << e;
-            std::cout << std::endl;
-        }
-    }
-
-    // ------------------------
-    // Handle shared options
-    // ------------------------
-    if (verbose) {
-    std::cout << "[Verbose] Using config: " << config_file << std::endl;
-    }
-
+    app.parse(argc, argv);                                                                                      \
+    // Subcommand logic handled in add.cpp and multiply.cpp
     return 0;
 }
 
