@@ -11,6 +11,7 @@
       "-I/home/ben/hub-tools/tools/cpp/lib/cli",
       "-I/home/ben/hub-tools/tools/cpp/lib/spdlog/include",
       "-Isrc",
+      "-I/home/ben/hub-tools/tools/cpp/lib/log_setup",
       "-o",
       "src/cli.o",
       "src/cli.cpp"
@@ -31,6 +32,7 @@
       "-I/home/ben/hub-tools/tools/cpp/lib/cli",
       "-I/home/ben/hub-tools/tools/cpp/lib/spdlog/include",
       "-Isrc",
+      "-I/home/ben/hub-tools/tools/cpp/lib/log_setup",
       "-o",
       "src/add.o",
       "src/add.cpp"
@@ -51,6 +53,7 @@
       "-I/home/ben/hub-tools/tools/cpp/lib/cli",
       "-I/home/ben/hub-tools/tools/cpp/lib/spdlog/include",
       "-Isrc",
+      "-I/home/ben/hub-tools/tools/cpp/lib/log_setup",
       "-o",
       "src/multiply.o",
       "src/multiply.cpp"
@@ -71,6 +74,7 @@
       "-I/home/ben/hub-tools/tools/cpp/lib/cli",
       "-I/home/ben/hub-tools/tools/cpp/lib/spdlog/include",
       "-Isrc",
+      "-I/home/ben/hub-tools/tools/cpp/lib/log_setup",
       "-o",
       "src/stacktrace.o",
       "src/stacktrace.cpp"
@@ -78,25 +82,5 @@
     "directory": "/home/ben/hub-tools/tools/cpp/cli",
     "file": "/home/ben/hub-tools/tools/cpp/cli/src/stacktrace.cpp",
     "output": "/home/ben/hub-tools/tools/cpp/cli/src/stacktrace.o"
-  },
-  {
-    "arguments": [
-      "/bin/g++",
-      "-c",
-      "-std=c++20",
-      "-g",
-      "-O0",
-      "-DDEBUG",
-      "-DFMT_HEADER_ONLY",
-      "-I/home/ben/hub-tools/tools/cpp/lib/cli",
-      "-I/home/ben/hub-tools/tools/cpp/lib/spdlog/include",
-      "-Isrc",
-      "-o",
-      "src/log.o",
-      "src/log.cpp"
-    ],
-    "directory": "/home/ben/hub-tools/tools/cpp/cli",
-    "file": "/home/ben/hub-tools/tools/cpp/cli/src/log.cpp",
-    "output": "/home/ben/hub-tools/tools/cpp/cli/src/log.o"
   }
 ]

@@ -2,7 +2,7 @@
 
 from SCons.Script import SConscript, VariantDir
 
-# Use 'build' directory for all build artifacts
+# Use 'build' directory for all build artifacts, with parent directory as source
 VariantDir('build', '.', duplicate=0)
 
 # Import the SConscript from the build directory
