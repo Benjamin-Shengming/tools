@@ -1,4 +1,5 @@
 #pragma once
 #include "CLI11.hpp"
+#include "add.h"
 
-void handle_multiply(CLI::App* multiply_cmd);
+void build_multiply_subcmd(CLI::App &app);

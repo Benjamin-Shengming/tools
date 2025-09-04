@@ -18,14 +18,15 @@ cli11_include = Dir('#../lib/cli').abspath
 spdlog_include = Dir('#../lib/spdlog/include').abspath
 local_include = Dir('#src').abspath
 log_setup_include = Dir('#../lib/log_setup').abspath
-env.Append(CPPPATH=[cli11_include, spdlog_include, local_include, log_setup_include])
+stacktrace_include = Dir('#../lib/stacktrace').abspath
+env.Append(CPPPATH=[cli11_include, spdlog_include, local_include, log_setup_include, stacktrace_include])
 
 # Source files using SCons path functions through the build directory
 sources = [
     File('#build/src/cli.cpp').abspath,
     File('#build/src/add.cpp').abspath,
     File('#build/src/multiply.cpp').abspath,
-    File('#build/src/stacktrace.cpp').abspath,
+    File('#build/../../lib/stacktrace/stacktrace.cpp').abspath,
     File('#build/../../lib/log_setup/log.cpp').abspath,
 ]
 

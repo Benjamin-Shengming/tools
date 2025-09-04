@@ -33,12 +33,11 @@ int main(int argc, char** argv) {
     // Subcommand: add
     build_add_subcmd(app);
 
-    spdlog::debug("After handle_add");
+    spdlog::debug("After build add");
     // Subcommand: multiply
-    auto multiply_cmd = app.add_subcommand("multiply", "Multiply two numbers");
-    multiply_cmd->allow_extras();
-    handle_multiply(multiply_cmd);
+    build_multiply_subcmd(app);
 
+    spdlog::debug("After build multiply");
     // ------------------------
     // Parse arguments
     // ------------------------

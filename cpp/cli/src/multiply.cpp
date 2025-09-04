@@ -1,17 +1,19 @@
 #include "multiply.h"
 #include <iostream>
 
-void handle_multiply(CLI::App* multiply_cmd) {
-    int x, y;
-    multiply_cmd->add_option("x", x, "First number")->required();
-    multiply_cmd->add_option("y", y, "Second number")->required();
-    multiply_cmd->callback([multiply_cmd, x, y]() {
-        std::cout << "Multiply: " << x << " * " << y << " = " << (x * y) << std::endl;
-        auto extras = multiply_cmd->remaining();
-        if (!extras.empty()) {
-            std::cout << "Extra args for multiply:";
-            for (const auto &e : extras) std::cout << " " << e;
-            std::cout << std::endl;
-        }
+struct multiply_options {
+    int x;
+    int y;
+};
+
+void build_multiply_subcmd(CLI::App& app) {
+    auto multiply_cmd = app.add_subcommand("multiply", "Multiply two numbers");
+    multiply_cmd->allow_extras();
+    // make a shared object to hold options
+    auto multiply_opts = std::make_shared<multiply_options>();
+    multiply_cmd->add_option("x", multiply_opts->x, "First number")->required();
+    multiply_cmd->add_option("y", multiply_opts->y, "Second number")->required();
+    multiply_cmd->callback([multiply_opts]() {
+        std::cout << "Multiply: " << multiply_opts->x << " * " << multiply_opts->y << " = " << (multiply_opts->x * multiply_opts->y) << std::endl;
     });
 }
