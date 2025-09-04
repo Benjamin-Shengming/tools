@@ -12,13 +12,14 @@
       "-I/home/ben/hub-tools/tools/cpp/lib/spdlog/include",
       "-Isrc",
       "-I/home/ben/hub-tools/tools/cpp/lib/log_setup",
+      "-I/home/ben/hub-tools/tools/cpp/lib/stacktrace",
       "-o",
-      "src/cli.o",
+      "build/src/cli.o",
       "src/cli.cpp"
     ],
     "directory": "/home/ben/hub-tools/tools/cpp/cli",
     "file": "/home/ben/hub-tools/tools/cpp/cli/src/cli.cpp",
-    "output": "/home/ben/hub-tools/tools/cpp/cli/src/cli.o"
+    "output": "/home/ben/hub-tools/tools/cpp/cli/build/src/cli.o"
   },
   {
     "arguments": [
@@ -33,13 +34,14 @@
       "-I/home/ben/hub-tools/tools/cpp/lib/spdlog/include",
       "-Isrc",
       "-I/home/ben/hub-tools/tools/cpp/lib/log_setup",
+      "-I/home/ben/hub-tools/tools/cpp/lib/stacktrace",
       "-o",
-      "src/add.o",
+      "build/src/add.o",
       "src/add.cpp"
     ],
     "directory": "/home/ben/hub-tools/tools/cpp/cli",
     "file": "/home/ben/hub-tools/tools/cpp/cli/src/add.cpp",
-    "output": "/home/ben/hub-tools/tools/cpp/cli/src/add.o"
+    "output": "/home/ben/hub-tools/tools/cpp/cli/build/src/add.o"
   },
   {
     "arguments": [
@@ -54,13 +56,14 @@
       "-I/home/ben/hub-tools/tools/cpp/lib/spdlog/include",
       "-Isrc",
       "-I/home/ben/hub-tools/tools/cpp/lib/log_setup",
+      "-I/home/ben/hub-tools/tools/cpp/lib/stacktrace",
       "-o",
-      "src/multiply.o",
+      "build/src/multiply.o",
       "src/multiply.cpp"
     ],
     "directory": "/home/ben/hub-tools/tools/cpp/cli",
     "file": "/home/ben/hub-tools/tools/cpp/cli/src/multiply.cpp",
-    "output": "/home/ben/hub-tools/tools/cpp/cli/src/multiply.o"
+    "output": "/home/ben/hub-tools/tools/cpp/cli/build/src/multiply.o"
   },
   {
     "arguments": [
@@ -75,12 +78,35 @@
       "-I/home/ben/hub-tools/tools/cpp/lib/spdlog/include",
       "-Isrc",
       "-I/home/ben/hub-tools/tools/cpp/lib/log_setup",
+      "-I/home/ben/hub-tools/tools/cpp/lib/stacktrace",
       "-o",
-      "src/stacktrace.o",
-      "src/stacktrace.cpp"
+      "/home/ben/hub-tools/tools/cpp/lib/stacktrace/stacktrace.o",
+      "/home/ben/hub-tools/tools/cpp/lib/stacktrace/stacktrace.cpp"
     ],
     "directory": "/home/ben/hub-tools/tools/cpp/cli",
-    "file": "/home/ben/hub-tools/tools/cpp/cli/src/stacktrace.cpp",
-    "output": "/home/ben/hub-tools/tools/cpp/cli/src/stacktrace.o"
+    "file": "/home/ben/hub-tools/tools/cpp/lib/stacktrace/stacktrace.cpp",
+    "output": "/home/ben/hub-tools/tools/cpp/lib/stacktrace/stacktrace.o"
+  },
+  {
+    "arguments": [
+      "/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-g",
+      "-O0",
+      "-DDEBUG",
+      "-DFMT_HEADER_ONLY",
+      "-I/home/ben/hub-tools/tools/cpp/lib/cli",
+      "-I/home/ben/hub-tools/tools/cpp/lib/spdlog/include",
+      "-Isrc",
+      "-I/home/ben/hub-tools/tools/cpp/lib/log_setup",
+      "-I/home/ben/hub-tools/tools/cpp/lib/stacktrace",
+      "-o",
+      "/home/ben/hub-tools/tools/cpp/lib/log_setup/log.o",
+      "/home/ben/hub-tools/tools/cpp/lib/log_setup/log.cpp"
+    ],
+    "directory": "/home/ben/hub-tools/tools/cpp/cli",
+    "file": "/home/ben/hub-tools/tools/cpp/lib/log_setup/log.cpp",
+    "output": "/home/ben/hub-tools/tools/cpp/lib/log_setup/log.o"
   }
 ]
