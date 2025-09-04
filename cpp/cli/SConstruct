@@ -1,6 +1,9 @@
 # SConstruct file for building cli.cpp using SCons
 
-from SCons.Script import SConscript
+from SCons.Script import SConscript, VariantDir
 
-# Import the SConscript from the current directory with the environment
-SConscript('SConscript')
+# Use 'build' directory for all build artifacts
+VariantDir('build', '.', duplicate=0)
+
+# Import the SConscript from the build directory
+SConscript('build/SConscript')

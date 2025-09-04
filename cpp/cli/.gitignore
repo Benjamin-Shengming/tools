@@ -29,6 +29,7 @@ run
 .DS_Store
 .vscode/
 .idea/
+.cache/
 
 # Ignore logs
 *.log

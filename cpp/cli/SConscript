@@ -1,12 +1,8 @@
 # SConscript file for building cli.cpp
-import os
-
-# Import SCons symbols
-from SCons.Script import Environment 
-
-
-# Set build type: debug or release
 import sys
+# Import SCons symbols
+from SCons.Script import Environment, Dir, File
+# Set build type: debug or release
 build_type = ARGUMENTS.get('build', 'release')
 
 if build_type == 'debug':
@@ -16,19 +12,21 @@ else:
     env = Environment(CXXFLAGS=['-std=c++20', '-O2'])
     print('Building in RELEASE mode')
 
-# Add include paths for CLI11.hpp and spdlog
-cli11_include = os.path.join('../lib', 'cli')
-spdlog_include = os.path.join('../lib/spdlog', 'include')
-env.Append(CPPPATH=[cli11_include, spdlog_include])
 
-# Source files
-sources = ['cli.cpp', 
-           'add.cpp', 
-           'multiply.cpp', 
-           'stacktrace.cpp', 
-           'log.cpp', 
-           
-           ]
+# Add include paths for CLI11.hpp, spdlog, and local src headers using SCons path functions
+cli11_include = Dir('#../lib/cli').abspath
+spdlog_include = Dir('#../lib/spdlog/include').abspath
+local_include = Dir('#src').abspath
+env.Append(CPPPATH=[cli11_include, spdlog_include, local_include])
+
+# Source files using SCons path functions
+sources = [
+    File('#src/cli.cpp').abspath,
+    File('#src/add.cpp').abspath,
+    File('#src/multiply.cpp').abspath,
+    File('#src/stacktrace.cpp').abspath,
+    File('#src/log.cpp').abspath,
+]
 
 # Define FMT_HEADER_ONLY globally for all files
 env.Append(CPPDEFINES=['FMT_HEADER_ONLY'])
