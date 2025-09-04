@@ -13,7 +13,16 @@ void build_multiply_subcmd(CLI::App& app) {
     auto multiply_opts = std::make_shared<multiply_options>();
     multiply_cmd->add_option("x", multiply_opts->x, "First number")->required();
     multiply_cmd->add_option("y", multiply_opts->y, "Second number")->required();
-    multiply_cmd->callback([multiply_opts]() {
+    multiply_cmd->callback([multiply_cmd ,multiply_opts]() {
         std::cout << "Multiply: " << multiply_opts->x << " * " << multiply_opts->y << " = " << (multiply_opts->x * multiply_opts->y) << std::endl;
+
+        // print extra args if any
+        if (!multiply_cmd->remaining().empty()) {
+            std::cout << "Extra args: ";
+            for (const auto& extra : multiply_cmd->remaining()) {
+                std::cout << extra << " ";
+            }
+            std::cout << std::endl;
+        }   
     });
 }
