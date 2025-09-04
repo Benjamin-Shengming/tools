@@ -34,4 +34,4 @@ sources = ['cli.cpp',
 env.Append(CPPDEFINES=['FMT_HEADER_ONLY'])
 
 # Build only the main CLI executable
-env.Program(target='cli', source=sources)
+env.Program(target='run', source=sources)
