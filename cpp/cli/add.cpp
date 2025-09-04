@@ -4,23 +4,22 @@
 #include <spdlog/fmt/ranges.h>
 #include <spdlog/spdlog.h>
 
-void handle_add(CLI::App* add_cmd) {
-    int a, b;
-    add_cmd->add_option("a", a, "First number")->required();
-    add_cmd->add_option("b", b, "Second number")->required();
-    add_cmd->callback([add_cmd, a, b]() {
-        spdlog::debug("Add command called with a={}, b={}", a, b);
-        std::cout << "Add: " << a << " + " << b << " = " << (a + b) << std::endl;
-        spdlog::debug("get extra args for add");
-        auto extras = add_cmd->remaining();
-        spdlog::debug("after get extra args for add {}", (void*)&extras);
+struct add_config {
+  int a;
+  int b;
+};
 
-        if (!extras.empty()) {
-            spdlog::debug("Extra args for add: {}", fmt::join(extras, ", "));
-            std::cout << "Extra args for add:";
-            for (const auto &e : extras) std::cout << " " << e;
-            std::cout << std::endl;
-        }
-        spdlog::debug("return from add command");
-    });
+void build_add_subcmd(CLI::App &app) {
+  add_config config;
+  auto sub_cmd = app.add_subcommand("add", "Add two numbers");
+  sub_cmd->add_option("a", config.a, "First number")->required();
+  sub_cmd->add_option("b", config.b, "Second number")->required();
+  sub_cmd->allow_extras();
+  sub_cmd->callback([config]() {
+    spdlog::debug("Add command called with a={}, b={}", config.a, config.b);
+    std::cout << "Add: " << config.a << " + " << config.b << " = "
+              << (config.a + config.b) << std::endl;
+
+    spdlog::debug("return from build ");
+  });
 }

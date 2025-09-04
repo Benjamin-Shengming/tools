@@ -10,7 +10,6 @@
 #include "log.h"
 
 
-
 int main(int argc, char** argv) {
     setup_log(1);
     spdlog::info("Starting CLI application info");
@@ -26,14 +25,13 @@ int main(int argc, char** argv) {
     bool verbose = false;
     std::string config_file = "default.conf";
 
-    app.add_flag("-v,--verbose", verbose, "Enable verbose output");
-    app.add_option("-c,--config", config_file, "Path to config file");
+    auto shared_group = app.add_option_group("Shared", "Shared/global options");
+    shared_group->add_flag("-v,--verbose", verbose, "Enable verbose output");
+    shared_group->add_option("-c,--config", config_file, "Path to config file");
 
 
     // Subcommand: add
-    auto add_cmd = app.add_subcommand("add", "Add two numbers");
-    add_cmd->allow_extras();
-    handle_add(add_cmd);
+    build_add_subcmd(app);
 
     spdlog::debug("After handle_add");
     // Subcommand: multiply
