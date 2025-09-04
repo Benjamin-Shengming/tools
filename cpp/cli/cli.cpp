@@ -1,5 +1,5 @@
 #include <spdlog/spdlog.h>
-#include "lib/cli/CLI11.hpp"
+#include "CLI11.hpp"
 #include <iostream>
 #include <string>
 #include <vector>

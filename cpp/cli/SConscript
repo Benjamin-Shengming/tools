@@ -17,8 +17,8 @@ else:
     print('Building in RELEASE mode')
 
 # Add include paths for CLI11.hpp and spdlog
-cli11_include = os.path.join('lib', 'cli')
-spdlog_include = os.path.join('lib/spdlog', 'include')
+cli11_include = os.path.join('../lib', 'cli')
+spdlog_include = os.path.join('../lib/spdlog', 'include')
 env.Append(CPPPATH=[cli11_include, spdlog_include])
 
 # Source files
