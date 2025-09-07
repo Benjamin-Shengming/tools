@@ -10,13 +10,13 @@ public:
 	virtual void pre_callback() = 0; // pure virtual function enforce implementation in derived classes
 };
 
+
 class MainApp : public PrecallableApp
 {
 public:
 	using PrecallableApp::PrecallableApp; // Inherit constructors
-	virtual void pre_callback() override
-	{
-	}
+	virtual void pre_callback() override { }
+	void add_help_option() { this->set_help_flag("-h,--help", "Show this help message and exit"); };
 };
 
 class SubCmdApp : public PrecallableApp

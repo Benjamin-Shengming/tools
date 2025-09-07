@@ -15,11 +15,13 @@ else:
 
 # Add include paths for CLI11.hpp, spdlog, and local src headers using SCons path functions
 cli11_include = Dir('#../lib/cli').abspath
+
 spdlog_include = Dir('#../lib/spdlog/include').abspath
 local_include = Dir('#src').abspath
 log_setup_include = Dir('#../lib/log_setup').abspath
 stacktrace_include = Dir('#../lib/stacktrace').abspath
-env.Append(CPPPATH=[cli11_include, spdlog_include, local_include, log_setup_include, stacktrace_include])
+json_include = Dir('#../lib/json/include').abspath
+env.Append(CPPPATH=[cli11_include, spdlog_include, local_include, log_setup_include, stacktrace_include, json_include])
 
 # Source files using SCons path functions through the build directory
 sources = [
@@ -27,6 +29,8 @@ sources = [
     File('#build/src/common.cpp').abspath,
     File('#build/src/add.cpp').abspath,
     File('#build/src/multiply.cpp').abspath,
+    File('#build/src/json_demo.cpp').abspath,
+    File('#build/src/encdec_demo.cpp').abspath,
     File('#build/../../lib/stacktrace/stacktrace.cpp').abspath,
     File('#build/../../lib/log_setup/log.cpp').abspath,
 ]

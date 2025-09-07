@@ -14,6 +14,7 @@
       "-Isrc",
       "-I/home/ben/tools/cpp/lib/log_setup",
       "-I/home/ben/tools/cpp/lib/stacktrace",
+      "-I/home/ben/tools/cpp/lib/json/include",
       "-o",
       "build/src/main.o",
       "src/main.cpp"
@@ -37,6 +38,7 @@
       "-Isrc",
       "-I/home/ben/tools/cpp/lib/log_setup",
       "-I/home/ben/tools/cpp/lib/stacktrace",
+      "-I/home/ben/tools/cpp/lib/json/include",
       "-o",
       "build/src/common.o",
       "src/common.cpp"
@@ -60,6 +62,7 @@
       "-Isrc",
       "-I/home/ben/tools/cpp/lib/log_setup",
       "-I/home/ben/tools/cpp/lib/stacktrace",
+      "-I/home/ben/tools/cpp/lib/json/include",
       "-o",
       "build/src/add.o",
       "src/add.cpp"
@@ -83,6 +86,7 @@
       "-Isrc",
       "-I/home/ben/tools/cpp/lib/log_setup",
       "-I/home/ben/tools/cpp/lib/stacktrace",
+      "-I/home/ben/tools/cpp/lib/json/include",
       "-o",
       "build/src/multiply.o",
       "src/multiply.cpp"
@@ -106,6 +110,55 @@
       "-Isrc",
       "-I/home/ben/tools/cpp/lib/log_setup",
       "-I/home/ben/tools/cpp/lib/stacktrace",
+      "-I/home/ben/tools/cpp/lib/json/include",
+      "-o",
+      "build/src/json_demo.o",
+      "src/json_demo.cpp"
+    ],
+    "directory": "/home/ben/tools/cpp/cli",
+    "file": "/home/ben/tools/cpp/cli/src/json_demo.cpp",
+    "output": "/home/ben/tools/cpp/cli/build/src/json_demo.o"
+  },
+  {
+    "arguments": [
+      "/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-g",
+      "-ggdb",
+      "-O0",
+      "-DDEBUG",
+      "-DFMT_HEADER_ONLY",
+      "-I/home/ben/tools/cpp/lib/cli",
+      "-I/home/ben/tools/cpp/lib/spdlog/include",
+      "-Isrc",
+      "-I/home/ben/tools/cpp/lib/log_setup",
+      "-I/home/ben/tools/cpp/lib/stacktrace",
+      "-I/home/ben/tools/cpp/lib/json/include",
+      "-o",
+      "build/src/encdec_demo.o",
+      "src/encdec_demo.cpp"
+    ],
+    "directory": "/home/ben/tools/cpp/cli",
+    "file": "/home/ben/tools/cpp/cli/src/encdec_demo.cpp",
+    "output": "/home/ben/tools/cpp/cli/build/src/encdec_demo.o"
+  },
+  {
+    "arguments": [
+      "/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-g",
+      "-ggdb",
+      "-O0",
+      "-DDEBUG",
+      "-DFMT_HEADER_ONLY",
+      "-I/home/ben/tools/cpp/lib/cli",
+      "-I/home/ben/tools/cpp/lib/spdlog/include",
+      "-Isrc",
+      "-I/home/ben/tools/cpp/lib/log_setup",
+      "-I/home/ben/tools/cpp/lib/stacktrace",
+      "-I/home/ben/tools/cpp/lib/json/include",
       "-o",
       "/home/ben/tools/cpp/lib/stacktrace/stacktrace.o",
       "/home/ben/tools/cpp/lib/stacktrace/stacktrace.cpp"
@@ -129,6 +182,7 @@
       "-Isrc",
       "-I/home/ben/tools/cpp/lib/log_setup",
       "-I/home/ben/tools/cpp/lib/stacktrace",
+      "-I/home/ben/tools/cpp/lib/json/include",
       "-o",
       "/home/ben/tools/cpp/lib/log_setup/log.o",
       "/home/ben/tools/cpp/lib/log_setup/log.cpp"
