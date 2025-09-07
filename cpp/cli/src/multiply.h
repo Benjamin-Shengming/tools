@@ -1,10 +1,15 @@
+
 #pragma once
 #include "CLI11.hpp"
-#include "add.h"
+#include <memory>
+#include "common.h"
 
-struct multiply_options;
-std::shared_ptr<multiply_options> build_multiply_subcmd(CLI::App &app);
-
-
-void run_multiply(CLI::App &app,
-                  std::shared_ptr<multiply_options> multiply_opts);
+class MultiplyCmdApp : public SubCmdApp {
+public:
+	MultiplyCmdApp();
+	virtual void run() override;
+	void add_options();
+protected:
+	int x;
+	int y;
+};

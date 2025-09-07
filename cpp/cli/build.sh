@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env bash
 # Build script for SCons with Bear to generate compile_commands.json
 
 # Run Bear with SCons to capture compilation database

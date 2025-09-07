@@ -1,1 +1,140 @@
-[]
+[
+  {
+    "arguments": [
+      "/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-g",
+      "-ggdb",
+      "-O0",
+      "-DDEBUG",
+      "-DFMT_HEADER_ONLY",
+      "-I/home/ben/tools/cpp/lib/cli",
+      "-I/home/ben/tools/cpp/lib/spdlog/include",
+      "-Isrc",
+      "-I/home/ben/tools/cpp/lib/log_setup",
+      "-I/home/ben/tools/cpp/lib/stacktrace",
+      "-o",
+      "build/src/main.o",
+      "src/main.cpp"
+    ],
+    "directory": "/home/ben/tools/cpp/cli",
+    "file": "/home/ben/tools/cpp/cli/src/main.cpp",
+    "output": "/home/ben/tools/cpp/cli/build/src/main.o"
+  },
+  {
+    "arguments": [
+      "/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-g",
+      "-ggdb",
+      "-O0",
+      "-DDEBUG",
+      "-DFMT_HEADER_ONLY",
+      "-I/home/ben/tools/cpp/lib/cli",
+      "-I/home/ben/tools/cpp/lib/spdlog/include",
+      "-Isrc",
+      "-I/home/ben/tools/cpp/lib/log_setup",
+      "-I/home/ben/tools/cpp/lib/stacktrace",
+      "-o",
+      "build/src/common.o",
+      "src/common.cpp"
+    ],
+    "directory": "/home/ben/tools/cpp/cli",
+    "file": "/home/ben/tools/cpp/cli/src/common.cpp",
+    "output": "/home/ben/tools/cpp/cli/build/src/common.o"
+  },
+  {
+    "arguments": [
+      "/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-g",
+      "-ggdb",
+      "-O0",
+      "-DDEBUG",
+      "-DFMT_HEADER_ONLY",
+      "-I/home/ben/tools/cpp/lib/cli",
+      "-I/home/ben/tools/cpp/lib/spdlog/include",
+      "-Isrc",
+      "-I/home/ben/tools/cpp/lib/log_setup",
+      "-I/home/ben/tools/cpp/lib/stacktrace",
+      "-o",
+      "build/src/add.o",
+      "src/add.cpp"
+    ],
+    "directory": "/home/ben/tools/cpp/cli",
+    "file": "/home/ben/tools/cpp/cli/src/add.cpp",
+    "output": "/home/ben/tools/cpp/cli/build/src/add.o"
+  },
+  {
+    "arguments": [
+      "/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-g",
+      "-ggdb",
+      "-O0",
+      "-DDEBUG",
+      "-DFMT_HEADER_ONLY",
+      "-I/home/ben/tools/cpp/lib/cli",
+      "-I/home/ben/tools/cpp/lib/spdlog/include",
+      "-Isrc",
+      "-I/home/ben/tools/cpp/lib/log_setup",
+      "-I/home/ben/tools/cpp/lib/stacktrace",
+      "-o",
+      "build/src/multiply.o",
+      "src/multiply.cpp"
+    ],
+    "directory": "/home/ben/tools/cpp/cli",
+    "file": "/home/ben/tools/cpp/cli/src/multiply.cpp",
+    "output": "/home/ben/tools/cpp/cli/build/src/multiply.o"
+  },
+  {
+    "arguments": [
+      "/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-g",
+      "-ggdb",
+      "-O0",
+      "-DDEBUG",
+      "-DFMT_HEADER_ONLY",
+      "-I/home/ben/tools/cpp/lib/cli",
+      "-I/home/ben/tools/cpp/lib/spdlog/include",
+      "-Isrc",
+      "-I/home/ben/tools/cpp/lib/log_setup",
+      "-I/home/ben/tools/cpp/lib/stacktrace",
+      "-o",
+      "/home/ben/tools/cpp/lib/stacktrace/stacktrace.o",
+      "/home/ben/tools/cpp/lib/stacktrace/stacktrace.cpp"
+    ],
+    "directory": "/home/ben/tools/cpp/cli",
+    "file": "/home/ben/tools/cpp/lib/stacktrace/stacktrace.cpp",
+    "output": "/home/ben/tools/cpp/lib/stacktrace/stacktrace.o"
+  },
+  {
+    "arguments": [
+      "/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-g",
+      "-ggdb",
+      "-O0",
+      "-DDEBUG",
+      "-DFMT_HEADER_ONLY",
+      "-I/home/ben/tools/cpp/lib/cli",
+      "-I/home/ben/tools/cpp/lib/spdlog/include",
+      "-Isrc",
+      "-I/home/ben/tools/cpp/lib/log_setup",
+      "-I/home/ben/tools/cpp/lib/stacktrace",
+      "-o",
+      "/home/ben/tools/cpp/lib/log_setup/log.o",
+      "/home/ben/tools/cpp/lib/log_setup/log.cpp"
+    ],
+    "directory": "/home/ben/tools/cpp/cli",
+    "file": "/home/ben/tools/cpp/lib/log_setup/log.cpp",
+    "output": "/home/ben/tools/cpp/lib/log_setup/log.o"
+  }
+]

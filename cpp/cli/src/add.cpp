@@ -1,27 +1,27 @@
 
 #include "add.h"
 #include <iostream>
-#include <memory>
-#include <spdlog/fmt/ranges.h>
 #include <spdlog/spdlog.h>
 
-struct add_config {
-  int a;
-  int b;
-};
+AddCmdApp::AddCmdApp() : SubCmdApp("Add two numbers", "add") {
+  add_common_options();
+  add_options();
+}
 
-void build_add_subcmd(CLI::App &app) {
-  // create a shared ptr here so it can be captured for later usage even this funciton ends 
-  auto config = std::make_shared<add_config>();
-  auto sub_cmd = app.add_subcommand("add", "Add two numbers");
-  sub_cmd->add_option("a", config->a, "First number")->required();
-  sub_cmd->add_option("b", config->b, "Second number")->required();
-  sub_cmd->allow_extras();
-  sub_cmd->callback([config]() {
-    spdlog::debug("Add command called with a={}, b={}", config->a, config->b);
-    std::cout << "Add: " << config->a << " + " << config->b << " = "
-              << (config->a + config->b) << std::endl;
+void AddCmdApp::run() {
+  spdlog::info("Add command was called");
+  try {
+    int result = a + b;
+    std::cout << "Result: " << result << std::endl;
+  } catch (const std::exception &e) {
+    spdlog::error("Error running add command: {}", e.what());
+  }
+}
 
-    spdlog::debug("return from build ");
-  });
+void AddCmdApp::add_options() {
+  this->add_option("a", this->a, "First number")->required();
+  this->add_option("b", this->b, "Second number")->required();
+  this->allow_extras();
+  this->fallthrough();
+  this->callback([this]() { this->run(); });  
 }

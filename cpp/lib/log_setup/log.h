@@ -1,7 +1,9 @@
 
 #pragma once
 
+#include <string>
 
-extern void setup_log(int log_verbosity);
+void setup_log(int log_verbosity, const std::string& name="");
+
 
 

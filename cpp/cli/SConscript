@@ -6,10 +6,10 @@ from SCons.Script import Environment, Dir, File
 build_type = ARGUMENTS.get('build', 'release')
 
 if build_type == 'debug':
-    env = Environment(CXXFLAGS=['-std=c++20', '-g', '-O0', '-DDEBUG'])
+    env = Environment(CXXFLAGS=['-std=c++20', '-g', '-ggdb', '-O0', '-DDEBUG'], LINKFLAGS=['-rdynamic'])
     print('Building in DEBUG mode')
 else:
-    env = Environment(CXXFLAGS=['-std=c++20', '-O2'])
+    env = Environment(CXXFLAGS=['-std=c++20', '-O2'], LINKFLAGS=['-rdynamic'])
     print('Building in RELEASE mode')
 
 
@@ -24,6 +24,7 @@ env.Append(CPPPATH=[cli11_include, spdlog_include, local_include, log_setup_incl
 # Source files using SCons path functions through the build directory
 sources = [
     File('#build/src/main.cpp').abspath,
+    File('#build/src/common.cpp').abspath,
     File('#build/src/add.cpp').abspath,
     File('#build/src/multiply.cpp').abspath,
     File('#build/../../lib/stacktrace/stacktrace.cpp').abspath,
