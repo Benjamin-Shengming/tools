@@ -1,3 +1,6 @@
 [submodule "cpp/cli/lib/spdlog"]
 	path = cpp/lib/spdlog
 	url = https://github.com/gabime/spdlog.git
+[submodule "cpp/lib/json"]
+	path = cpp/lib/json
+	url = https://github.com/nlohmann/json
